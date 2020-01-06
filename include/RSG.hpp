@@ -5,9 +5,15 @@
 #include <chrono>
 #include <mutex>
 #include <list>
+#include <unordered_set>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
 
 using namespace std;
 
+
+void printList(list<string> vlist,string sep);
 
 class ThreadHandler{
 public:
@@ -25,9 +31,24 @@ public:
     return 0;
   }
 
-
-
 private:
   int total;
   list<thread*> threadList;
+};
+
+class stringGen{
+public:
+  stringGen();
+  ~stringGen();
+  int setCharSet(char cset[],int len);
+  int returnList(list<string> *copyLoc);
+  int returnListLen();
+  int addString(string toAdd);
+  int genStrings(int number, int len);
+private:
+  string genString(int len);
+  int randIndex();
+  unordered_set <string> strings;
+  char *charSet = NULL;
+  int total, setLen = 0;
 };
