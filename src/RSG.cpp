@@ -42,6 +42,7 @@ stringGen::stringGen(){
   return;
 }
 stringGen::~stringGen(){
+  delete [] this->charSet;
   return;
 }
 int stringGen::returnList(list<string> *copyLoc){
