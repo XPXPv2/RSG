@@ -1,28 +1,37 @@
 #include "RSG.hpp"
 using namespace std;
 
-void testThread(int name){
-  printf("Thread %d Start\n",name );
-  this_thread::sleep_for (std::chrono::seconds(name));
-  printf("Thread %d Finish\n",name );
+//deuging puposes remove for final relase
+#define TESTSTRINGSET "ABCDEFG"
+#define TESTLISTSET {'a','b','c','d','e','f','g'}
+
+
+void printList(list<string> vlist, string sep);
+void testRSG();
+
+int main(int argc, char const *argv[]) {
+  cout << "testing RSG" << endl;
+  testRSG();
+  cout << "finished testing RSG" << endl;
+  return 0;
+}
+
+void testRSG(){
+  cout << "starting object" << endl;
+  //stringGen gen; // create object currently disabled due to lack of implumentation
+  cout << "testing set setting" << endl;
+  //test setting set with string
+  //gen.setCharSet(TESTSTRINGSET); //currently disabled due to lack of implumentation
+  //test setting with list
+  //gen.setCharSet(TESTLISTSET); //currently disabled due to lack of implumentation
+  cout << "finsished set setting" << endl;
   return;
 }
 
-int main(int argc, char const *argv[]) {
-  ThreadHandler test;
-  for(int a =0;a < 1; a++){
-    test.addThread(1,testThread,a);
+void printList(list<string> vlist, string sep){
+  list<string> :: iterator itr;
+  for ( itr = vlist.begin(); itr != vlist.end(); itr++){
+    cout << (*itr) << sep;
   }
-
-  test.Finish();
-  stringGen test2;
-  char a[] = {'a','b','c'};
-  list<string> b;
-  RSGPAR input = {4,20,3,false,"as",{'a','b','c'},3,"as"};
-  cout << test2.genStringsThread(input);
-  test2.returnList(&b);
-  cout << "returned List: " << b.size() << " internal list: " << test2.returnListLen() << endl;
-  printList(b, " : ");
-  cout << endl << "done tesing";
-  return 0;
+  cout << endl;
 }
