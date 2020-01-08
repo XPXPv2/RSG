@@ -87,7 +87,8 @@ string stringGen::genString(int len){
   return prd;
 }
 
-int stringGen::genStrings(int number, int len){
+int stringGen::genStrings(int number){
+  int len = this->stringLen;
   int max = pow((this->setLen), len);
   cout << max;
   if (number > max){
@@ -107,5 +108,36 @@ int stringGen::genStrings(int number, int len){
     }
     //cout << "added " << str;
   }
+  return 0;
+}
+
+int stringGen::genStringsThread(RSGPAR par){
+  list<char> chars;
+  if(par.listORfile){
+    fstream file;
+    file.open(par.charFile);
+    string C;
+    while(getline(file,C,',')){
+      chars.push_back(C[0]);
+    }
+
+  } else {
+    chars = par.charList;
+  }
+  char charArr[chars.size()];
+  int len = chars.size();
+  copy(chars.begin(), chars.end(), charArr);
+  this->setCharSet(charArr,len);
+  this->stringLen = par.lenOfString;
+  if(pow(this->setLen,par.lenOfString) < par.numberOfStrings) return -1;
+
+  int perThread = floor(par.numberOfStrings/par.numberOfThreads);
+  int extra =  par.numberOfStrings % par.numberOfThreads;
+  cout << "thread 1: " << perThread + extra << " the rest: " << perThread << endl;
+  int tmp = (perThread + extra);
+  ThreadHandler threads;
+  threads.addThread(1,stringGen::genStrings,this);
+  threads.addThread(par.numberOfThreads-1,this->genStrings,perThread);
+  threads.Finish();
   return 0;
 }

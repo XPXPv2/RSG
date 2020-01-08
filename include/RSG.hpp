@@ -9,9 +9,21 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
+//make it multithreaded combine the parts and finish this part of the project
+typedef struct{
+  int lenOfString;
+  int numberOfStrings;
+  int numberOfThreads;
+  bool listORfile; //True File False list
+  string charFile;
+  list<char> charList;
+  int charListLen;
+  string saveFile;
+} RSGPAR;
 
 void printList(list<string> vlist,string sep);
 
@@ -44,11 +56,12 @@ public:
   int returnList(list<string> *copyLoc);
   int returnListLen();
   int addString(string toAdd);
-  int genStrings(int number, int len);
+  int genStrings(int number);
+  int genStringsThread(RSGPAR par);
 private:
   string genString(int len);
   int randIndex();
   unordered_set <string> strings;
   char *charSet = NULL;
-  int total, setLen = 0;
+  int total, setLen, stringLen = 0;
 };

@@ -18,8 +18,8 @@ int main(int argc, char const *argv[]) {
   stringGen test2;
   char a[] = {'a','b','c'};
   list<string> b;
-  test2.setCharSet(a,3);
-  test2.genStrings(81,4);
+  RSGPAR input = {4,20,3,false,"as",{'a','b','c'},3,"as"};
+  cout << test2.genStringsThread(input);
   test2.returnList(&b);
   cout << "returned List: " << b.size() << " internal list: " << test2.returnListLen() << endl;
   printList(b, " : ");
