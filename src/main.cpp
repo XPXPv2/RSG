@@ -18,12 +18,10 @@ int main(int argc, char const *argv[]) {
 
 void testRSG(){
   cout << "starting object" << endl;
-  //stringGen gen; // create object currently disabled due to lack of implumentation
+  stringGen gen; // create object currently disabled due to lack of implumentation
   cout << "testing set setting" << endl;
   //test setting set with string
-  //gen.setCharSet(TESTSTRINGSET); //currently disabled due to lack of implumentation
-  //test setting with list
-  //gen.setCharSet(TESTLISTSET); //currently disabled due to lack of implumentation
+  gen.setCharSet(TESTSTRINGSET);
   cout << "finsished set setting" << endl;
   return;
 }

@@ -55,4 +55,5 @@ private:
   //functions
   int randIndex();
   int initRandom();
+  int clearMemory();
 };
