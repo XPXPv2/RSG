@@ -34,13 +34,23 @@ int stringGen::setCharSet(std::list<char> set){
 
 // returns list of strings
 //int stringGen::returnList(std::list<std::string> *copyLoc);
-//std::list<std::string> stringGen::returnList();
+std::list<std::string> stringGen::returnList(){
+  std::list<std::string> temp;
+  temp.insert(temp.end(),this->strings.begin(),this->strings.end());
+  return temp;
+}
 
 //returns number of strings
 //int stringGen::returnListLen();
 
 // adds string to string list
-//int stringGen::addString(std::string toAdd);
+int stringGen::addString(std::string toAdd){
+  if((this->strings).find(toAdd) != (this->strings).end()){
+    return -1;
+  }
+  (this->strings).insert(toAdd);
+  return 0;
+}
 
 //gernerates a single string of lengh (len)
 //std::string stringGen::genString(int len);

@@ -23,6 +23,12 @@ void testRSG(){
   //test setting set with string
   gen.setCharSet(TESTSTRINGSET);
   cout << "finsished set setting" << endl;
+  cout << "testing string adding and retrval" << endl;
+  cout << "adding string" << endl;
+  gen.addString("abc");
+  cout << "reteaved: "<< endl;
+  printList(gen.returnList(),", ");
+  cout << "finsished testing sting storage" << endl;
   return;
 }
 
