@@ -42,7 +42,7 @@ void testRSG(){
   printList(gen.returnList(),", ");
   gen.clearMemory(false,true,true);
   list<char> a = TESTLISTSET;
-  gen.setCharSet(a); 
+  gen.setCharSet(a);
   cout << "finished testing multable string gen"<< endl;
   cout << "testing multithreaded string gen"<< endl;
   cout << "starting 10 threads 2 strings each"<< endl;
@@ -53,6 +53,15 @@ void testRSG(){
   cout << "with length: " << gen.returnListLen() << endl;
   cout << "finished testing multithreaded string gen" << endl;
 
+  cout << "testing full multithreading 5 threads 101 strings" << endl;
+  gen.clearMemory(true,true,false);
+  gen.stringThreadHandler(5,101);
+  gen.clearMemory(true,false,false);
+  cout << "generated: "<< endl;
+  printList(gen.returnList(),", ");
+  cout << "with length: " << gen.returnListLen() << endl;
+  cout << "finished testing full multithreading 5 threads 101 strings" << endl;
+  
   return;
 }
 

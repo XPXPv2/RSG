@@ -104,7 +104,17 @@ int stringGen::startStringThread(int threadNumber, int stringNumber){
 }
 
 //divys up the number strings to be generated to the threads it starts with startStringThread
-//int stringGen::stringThreadHandler(int threadNumber, int stringNumber);
+int stringGen::stringThreadHandler(int threadNumber, int stringNumber){
+  if(pow(this->setLen,this->stringLen) < stringNumber) return -1;
+
+  int perThread = floor(stringNumber/threadNumber);
+  int extra =  stringNumber % threadNumber;
+  std::cout << "thread 1: " << perThread + extra << " the rest: " << perThread << std::endl;
+  int tmp = (perThread + extra);
+  this->startStringThread(1,tmp);
+  this->startStringThread(threadNumber - 1, perThread);
+  return 0;
+}
 
 //frees up any allocated memory
 int stringGen::clearMemory(bool threads,bool list,bool set){
