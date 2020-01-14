@@ -28,6 +28,10 @@ void testRSG(){
   gen.addString("abc");
   cout << "reteaved: "<< endl;
   printList(gen.returnList(),", ");
+  cout << "testing removeal" << endl;
+  gen.clearMemory(true,true,false);
+  cout << "reteaved: "<< endl;
+  printList(gen.returnList(),", ");
   cout << "finsished testing sting storage" << endl;
   cout << "testing string generation" << endl;
   cout << "generated: " << gen.genString(10) << endl;
@@ -36,7 +40,17 @@ void testRSG(){
   gen.genStrings(10);
   cout << "generated: "<< endl;
   printList(gen.returnList(),", ");
+  gen.clearMemory(false,true,false);
   cout << "finished testing multable string gen"<< endl;
+  cout << "testing multithreaded string gen"<< endl;
+  cout << "starting 10 threads 2 strings each"<< endl;
+  gen.startStringThread(10,2);
+  gen.clearMemory(true,false,false);
+  cout << "generated: "<< endl;
+  printList(gen.returnList(),", ");
+  cout << "with length: " << gen.returnListLen() << endl;
+  cout << "finished testing multithreaded string gen" << endl;
+
   return;
 }
 

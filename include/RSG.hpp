@@ -29,6 +29,9 @@ public:
   //returns number of strings
   int returnListLen();
 
+  //clears threads list or set or all
+  int clearMemory(bool threads,bool list,bool set);
+
   // adds string to string list
   int addString(std::string toAdd);
 
@@ -55,5 +58,5 @@ private:
   //functions
   int randIndex();
   int initRandom();
-  int clearMemory();
+
 };

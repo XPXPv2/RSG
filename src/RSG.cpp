@@ -13,7 +13,7 @@ stringGen::stringGen(int stringLen){
   return;
 }
 stringGen::~stringGen(){
-  this->clearMemory();
+  this->clearMemory(true,true,true);
   return;
 }
 // set the Set
@@ -42,7 +42,9 @@ std::list<std::string> stringGen::returnList(){
 }
 
 //returns number of strings
-//int stringGen::returnListLen();
+int stringGen::returnListLen(){
+  return this->strings.size();
+}
 
 // adds string to string list
 int stringGen::addString(std::string toAdd){
@@ -55,6 +57,9 @@ int stringGen::addString(std::string toAdd){
 
 //gernerates a single string of lengh (len)
 std::string stringGen::genString(int len){
+  if(this->setLen == 0){
+    return "";
+  }
   std::string temp;
   for(int i = 0; i < len; i++){
     temp += (this->charSet)[(this->randIndex())];
@@ -71,6 +76,9 @@ int stringGen::genStrings(int number){
   std::string temp;
   for(int i = 0;i < number;i++){
     temp = this->genString(this->stringLen);
+    if(temp == ""){
+      return -1;
+    }
     MUX.lock();
     if(this->addString(temp) == -1){
       MUX.unlock();
@@ -85,13 +93,34 @@ int stringGen::genStrings(int number){
 }
 
 //starts threads equal to (threadNumber) running genStrings
-//int stringGen::startStringThread(int threadNumber, int stringNumber);
+int stringGen::startStringThread(int threadNumber, int stringNumber){
+  std::thread *threadPTR = NULL;
+  for(int i = 0;i < threadNumber;i++){
+    threadPTR = new std::thread(&stringGen::genStrings,this,stringNumber);
+    this->threadList.push_back(threadPTR);
+    this->threadCount++;
+  }
+  return 0;
+}
 
 //divys up the number strings to be generated to the threads it starts with startStringThread
 //int stringGen::stringThreadHandler(int threadNumber, int stringNumber);
 
 //frees up any allocated memory
-int stringGen::clearMemory(){
+int stringGen::clearMemory(bool threads,bool list,bool set){
+  if(list){
+    this->strings.erase(this->strings.begin(), this->strings.end());
+  }
+  if(threads){
+    for(auto const& i : this->threadList){
+      if(i->joinable()){
+        i->join();
+      }
+      delete i;
+      this->threadCount--;
+    }
+    this->threadList.clear();
+  }
   return 0;
 }
 
