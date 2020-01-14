@@ -16,7 +16,7 @@
 
 class stringGen{
 public:
-  stringGen();
+  stringGen(int stringLen);
   ~stringGen();
   // set the Set
   int setCharSet(std::string set);

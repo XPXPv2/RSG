@@ -6,9 +6,10 @@ std::mutex MUX;
 
 // functions to add
 
-stringGen::stringGen(){
+stringGen::stringGen(int stringLen){
   //initalizes the nessary things for randomness
   this->initRandom();
+  this->stringLen = stringLen;
   return;
 }
 stringGen::~stringGen(){
@@ -62,7 +63,26 @@ std::string stringGen::genString(int len){
 }
 
 //gernerates strings and adds them to the list
-//int stringGen::genStrings(int number);
+int stringGen::genStrings(int number){
+  int max = pow((this->setLen), this->stringLen);
+  if (number > max){
+    return -1;
+  }
+  std::string temp;
+  for(int i = 0;i < number;i++){
+    temp = this->genString(this->stringLen);
+    MUX.lock();
+    if(this->addString(temp) == -1){
+      MUX.unlock();
+      i--;
+      continue;
+    } else {
+      MUX.unlock();
+    }
+    //cout << "added " << str;
+  }
+  return 0;
+}
 
 //starts threads equal to (threadNumber) running genStrings
 //int stringGen::startStringThread(int threadNumber, int stringNumber);

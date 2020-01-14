@@ -18,7 +18,7 @@ int main(int argc, char const *argv[]) {
 
 void testRSG(){
   cout << "starting object" << endl;
-  stringGen gen; // create object currently disabled due to lack of implumentation
+  stringGen gen(5); // create object currently disabled due to lack of implumentation
   cout << "testing set setting" << endl;
   //test setting set with string
   gen.setCharSet(TESTSTRINGSET);
@@ -33,6 +33,10 @@ void testRSG(){
   cout << "generated: " << gen.genString(10) << endl;
   cout << "finsished testing sting gen" << endl;
   cout << "testing multable string generation" << endl;
+  gen.genStrings(10);
+  cout << "generated: "<< endl;
+  printList(gen.returnList(),", ");
+  cout << "finished testing multable string gen"<< endl;
   return;
 }
 
