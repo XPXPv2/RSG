@@ -40,7 +40,9 @@ void testRSG(){
   gen.genStrings(10);
   cout << "generated: "<< endl;
   printList(gen.returnList(),", ");
-  gen.clearMemory(false,true,false);
+  gen.clearMemory(false,true,true);
+  list<char> a = TESTLISTSET;
+  gen.setCharSet(a); 
   cout << "finished testing multable string gen"<< endl;
   cout << "testing multithreaded string gen"<< endl;
   cout << "starting 10 threads 2 strings each"<< endl;

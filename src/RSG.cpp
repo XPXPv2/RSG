@@ -109,7 +109,7 @@ int stringGen::startStringThread(int threadNumber, int stringNumber){
 //frees up any allocated memory
 int stringGen::clearMemory(bool threads,bool list,bool set){
   if(list){
-    this->strings.erase(this->strings.begin(), this->strings.end());
+    this->strings.clear();
   }
   if(threads){
     for(auto const& i : this->threadList){
@@ -120,6 +120,10 @@ int stringGen::clearMemory(bool threads,bool list,bool set){
       this->threadCount--;
     }
     this->threadList.clear();
+  }
+  if(set){
+    this->setLen = 0;
+    this->charSet.clear();
   }
   return 0;
 }
