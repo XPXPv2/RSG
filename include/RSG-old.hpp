@@ -13,6 +13,8 @@
 
 using namespace std;
 
+//TODO remove this file
+
 //make it multithreaded combine the parts and finish this part of the project
 typedef struct{
   int lenOfString;
