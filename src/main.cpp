@@ -29,6 +29,10 @@ void testRSG(){
   cout << "reteaved: "<< endl;
   printList(gen.returnList(),", ");
   cout << "finsished testing sting storage" << endl;
+  cout << "testing string generation" << endl;
+  cout << "generated: " << gen.genString(10) << endl;
+  cout << "finsished testing sting gen" << endl;
+  cout << "testing multable string generation" << endl;
   return;
 }
 

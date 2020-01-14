@@ -53,7 +53,13 @@ int stringGen::addString(std::string toAdd){
 }
 
 //gernerates a single string of lengh (len)
-//std::string stringGen::genString(int len);
+std::string stringGen::genString(int len){
+  std::string temp;
+  for(int i = 0; i < len; i++){
+    temp += (this->charSet)[(this->randIndex())];
+  }
+  return temp;
+}
 
 //gernerates strings and adds them to the list
 //int stringGen::genStrings(int number);
