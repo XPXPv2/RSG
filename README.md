@@ -1,2 +1,2 @@
 # RSG
- Random string generator serves no purpose other them maby benchmarking
+Random string generator that serves no purpose other them maybe benchmarking a computer.
