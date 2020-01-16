@@ -2,61 +2,53 @@
 #include <iostream>
 #include <thread>
 #include <string>
+#include <chrono>
 #include <mutex>
 #include <list>
 #include <unordered_set>
 #include <cstdlib>
 #include <ctime>
-
-// posable need libarys
-
-
 #include <cmath>
-#include <algorithm>
+
+using namespace std;
+
+
+void printList(list<string> vlist,string sep);
+
+class ThreadHandler{
+public:
+  ThreadHandler();
+  ~ThreadHandler();
+  int Finish();
+
+  template <class parm,class fun>
+  int addThread(int number,fun func,parm paramiter){
+    for(int Tnum =0; Tnum < number;Tnum++){
+      thread *threadPTR = new thread(func,paramiter);
+      this->threadList.push_back(threadPTR);
+      this->total++;
+    }
+    return 0;
+  }
+
+private:
+  int total;
+  list<thread*> threadList;
+};
 
 class stringGen{
 public:
-  stringGen(int stringLen);
+  stringGen();
   ~stringGen();
-  // set the Set
-  int setCharSet(std::string set);
-  int setCharSet(std::list<char> set);
-
-  // returns list of strings
-  int returnList(std::list<std::string> *copyLoc);
-  std::list<std::string> returnList();
-
-  //returns number of strings
+  int setCharSet(char cset[],int len);
+  int returnList(list<string> *copyLoc);
   int returnListLen();
-
-  //clears threads list or set or all
-  int clearMemory(bool threads,bool list,bool set);
-
-  // adds string to string list
-  int addString(std::string toAdd);
-
-  //gernerates a single string of lengh (len)
-  std::string genString(int len);
-
-  //gernerates strings and adds them to the list
-  int genStrings(int number);
-
-  //starts threads equal to (threadNumber) running genStrings
-  int startStringThread(int threadNumber, int stringNumber);
-
-  //divys up the number strings to be generated to the threads it starts with startStringThread
-  int stringThreadHandler(int threadNumber, int stringNumber);
-
+  int addString(string toAdd);
+  int genStrings(int number, int len);
 private:
-  //vars
-  std::unordered_set <std::string> strings;
-  std::string charSet = "";
-  std::list<std::thread*> threadList;
-  int setLen, threadCount = 0;
-  int stringLen = 0;
-
-  //functions
+  string genString(int len);
   int randIndex();
-  int initRandom();
-
+  unordered_set <string> strings;
+  char *charSet = NULL;
+  int total, setLen = 0;
 };
