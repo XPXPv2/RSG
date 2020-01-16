@@ -87,7 +87,6 @@ int stringGen::genStrings(int number){
     } else {
       MUX.unlock();
     }
-    //cout << "added " << str;
   }
   return 0;
 }
@@ -109,7 +108,6 @@ int stringGen::stringThreadHandler(int threadNumber, int stringNumber){
 
   int perThread = floor(stringNumber/threadNumber);
   int extra =  stringNumber % threadNumber;
-  std::cout << "thread 1: " << perThread + extra << " the rest: " << perThread << std::endl;
   int tmp = (perThread + extra);
   this->startStringThread(1,tmp);
   this->startStringThread(threadNumber - 1, perThread);
