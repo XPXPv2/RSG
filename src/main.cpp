@@ -1,4 +1,5 @@
 #include "RSG.hpp"
+#include <iostream>
 using namespace std;
 
 //deuging puposes remove for final relase
@@ -61,7 +62,7 @@ void testRSG(){
   printList(gen.returnList(),", ");
   cout << "with length: " << gen.returnListLen() << endl;
   cout << "finished testing full multithreading 5 threads 101 strings" << endl;
-  
+
   return;
 }
 

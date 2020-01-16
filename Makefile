@@ -10,3 +10,8 @@ bin/main.o: src/main.cpp include/RSG.hpp
 
 bin/RSG.o: src/RSG.cpp include/RSG.hpp
 	g++-8 -g -c -o bin/RSG.o src/RSG.cpp -I include -std=c++11 -pthread
+
+clean:
+	rm bin/debug.bin
+	rm bin/main.o
+	rm bin/RSG.o

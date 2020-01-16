@@ -1,18 +1,16 @@
-#include <fstream>
-#include <iostream>
+
+
 #include <thread>
 #include <string>
 #include <mutex>
 #include <list>
 #include <unordered_set>
-#include <cstdlib>
-#include <ctime>
+#include <cmath>
 
 // posable need libarys
 
 
-#include <cmath>
-#include <algorithm>
+
 
 class stringGen{
 public:
