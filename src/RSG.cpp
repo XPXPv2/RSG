@@ -3,9 +3,6 @@
 //decloration of the mutex
 std::mutex MUX;
 
-
-// functions to add
-
 stringGen::stringGen(int stringLen){
   //initalizes the nessary things for randomness
   this->initRandom();

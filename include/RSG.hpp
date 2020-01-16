@@ -7,10 +7,6 @@
 #include <unordered_set>
 #include <cmath>
 
-// posable need libarys
-
-
-
 
 class stringGen{
 public:
