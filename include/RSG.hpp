@@ -1,67 +1,56 @@
-#include <fstream>
-#include <iostream>
+
+
 #include <thread>
 #include <string>
-#include <chrono>
 #include <mutex>
 #include <list>
 #include <unordered_set>
-#include <cstdlib>
-#include <ctime>
 #include <cmath>
-#include <algorithm>
 
-using namespace std;
-
-//make it multithreaded combine the parts and finish this part of the project
-typedef struct{
-  int lenOfString;
-  int numberOfStrings;
-  int numberOfThreads;
-  bool listORfile; //True File False list
-  string charFile;
-  list<char> charList;
-  int charListLen;
-  string saveFile;
-} RSGPAR;
-
-void printList(list<string> vlist,string sep);
-
-class ThreadHandler{
-public:
-  ThreadHandler();
-  ~ThreadHandler();
-  int Finish();
-
-  template <class parm,class fun>
-  int addThread(int number,fun func,parm paramiter){
-    for(int Tnum =0; Tnum < number;Tnum++){
-      thread *threadPTR = new thread(func,paramiter);
-      this->threadList.push_back(threadPTR);
-      this->total++;
-    }
-    return 0;
-  }
-
-private:
-  int total;
-  list<thread*> threadList;
-};
 
 class stringGen{
 public:
-  stringGen();
+  stringGen(int stringLen);
   ~stringGen();
-  int setCharSet(char cset[],int len);
-  int returnList(list<string> *copyLoc);
+  // set the Set
+  int setCharSet(std::string set);
+  int setCharSet(std::list<char> set);
+
+  // returns list of strings
+  int returnList(std::list<std::string> *copyLoc);
+  std::list<std::string> returnList();
+
+  //returns number of strings
   int returnListLen();
-  int addString(string toAdd);
+
+  //clears threads list or set or all
+  int clearMemory(bool threads,bool list,bool set);
+
+  // adds string to string list
+  int addString(std::string toAdd);
+
+  //gernerates a single string of lengh (len)
+  std::string genString(int len);
+
+  //gernerates strings and adds them to the list
   int genStrings(int number);
-  int genStringsThread(RSGPAR par);
+
+  //starts threads equal to (threadNumber) running genStrings
+  int startStringThread(int threadNumber, int stringNumber);
+
+  //divys up the number strings to be generated to the threads it starts with startStringThread
+  int stringThreadHandler(int threadNumber, int stringNumber);
+
 private:
-  string genString(int len);
+  //vars
+  std::unordered_set <std::string> strings;
+  std::string charSet = "";
+  std::list<std::thread*> threadList;
+  int setLen, threadCount = 0;
+  int stringLen = 0;
+
+  //functions
   int randIndex();
-  unordered_set <string> strings;
-  char *charSet = NULL;
-  int total, setLen, stringLen = 0;
+  int initRandom();
+
 };
