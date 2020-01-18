@@ -16,6 +16,8 @@ public:
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);
 
+  std::string returnSet();
+
   // returns list of strings
   int returnList(std::list<std::string> *copyLoc);
   std::list<std::string> returnList();

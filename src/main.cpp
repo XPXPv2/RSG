@@ -1,4 +1,14 @@
+
+
+#ifndef TEST
+#define TEST 0
 #include "RSG.hpp"
+#else
+#undef TEST
+#define TEST 1
+#include "test.hpp"
+#endif
+
 #include <iostream>
 using namespace std;
 
@@ -11,10 +21,10 @@ void printList(list<string> vlist, string sep);
 void testRSG();
 
 int main(int argc, char const *argv[]) {
-  cout << "testing RSG" << endl;
-  testRSG();
-  cout << "finished testing RSG" << endl;
-  return 0;
+  #if TEST == 1
+  return RSGtest(argc,argv);
+  #endif
+
 }
 
 void testRSG(){
