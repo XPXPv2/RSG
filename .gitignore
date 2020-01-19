@@ -31,6 +31,3 @@
 *.out
 *.app
 *.bin
-
-#test case
-libarys/catch.hpp
