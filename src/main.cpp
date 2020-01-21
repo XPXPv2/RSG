@@ -18,13 +18,4 @@ int main(int argc, char const *argv[]) {
   #if TEST == 1
   return RSGtest(argc,argv);
   #endif
-
-}
-
-void printList(list<string> vlist, string sep){
-  list<string> :: iterator itr;
-  for ( itr = vlist.begin(); itr != vlist.end(); itr++){
-    cout << (*itr) << sep;
-  }
-  cout << endl;
 }
