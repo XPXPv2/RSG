@@ -2,3 +2,4 @@ language: cpp
 
 script:
 - make setup && make debug.bin
+- ./bin/debug.bin

@@ -30,6 +30,10 @@ int stringGen::setCharSet(std::list<char> set){
   return 0;
 }
 
+std::string stringGen::returnSet(){
+  return this->charSet;
+}
+
 // returns list of strings
 //int stringGen::returnList(std::list<std::string> *copyLoc);
 std::list<std::string> stringGen::returnList(){
