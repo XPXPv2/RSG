@@ -12,6 +12,8 @@ class stringGen{
 public:
   stringGen(int stringLen);
   ~stringGen();
+  //test if the the request amout of strings is posable
+  int posableGen(int number);
   // set the Set
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);

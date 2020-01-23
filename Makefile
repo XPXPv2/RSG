@@ -15,7 +15,7 @@ bin/RSG.o: src/RSG.cpp include/RSG.hpp
 	g++ -g -c -o bin/RSG.o src/RSG.cpp -I include -I libarys -std=c++17 -pthread
 
 
-relase.bin: clean
+relase.bin:
 	g++ -g -c -o bin/main.o src/main.cpp -I include -I libarys -std=c++17 -pthread
 	g++ -g -c -o bin/RSG.o src/RSG.cpp -I include -I libarys -std=c++17 -pthread
 	g++ -g -o bin/relase.bin bin/main.o bin/RSG.o -std=c++17 -pthread

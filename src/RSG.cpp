@@ -13,6 +13,11 @@ stringGen::~stringGen(){
   this->clearMemory(true,true,true);
   return;
 }
+
+int stringGen::posableGen(int number){
+  if(pow(this->setLen,this->stringLen) < number) return -1;
+  return 0;
+}
 // set the Set
 int stringGen::setCharSet(std::string set){
   this->charSet = set;
@@ -70,10 +75,7 @@ std::string stringGen::genString(int len){
 
 //gernerates strings and adds them to the list
 int stringGen::genStrings(int number){
-  int max = pow((this->setLen), this->stringLen);
-  if (number > max){
-    return -1;
-  }
+  if(this->posableGen(number) != 0) return -1;
   std::string temp;
   for(int i = 0;i < number;i++){
     temp = this->genString(this->stringLen);
@@ -105,7 +107,7 @@ int stringGen::startStringThread(int threadNumber, int stringNumber){
 
 //divys up the number strings to be generated to the threads it starts with startStringThread
 int stringGen::stringThreadHandler(int threadNumber, int stringNumber){
-  if(pow(this->setLen,this->stringLen) < stringNumber) return -1;
+  if(this->posableGen(stringNumber) != 0) return -1;
 
   int perThread = floor(stringNumber/threadNumber);
   int extra =  stringNumber % threadNumber;
