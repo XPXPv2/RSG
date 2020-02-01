@@ -22,17 +22,20 @@ int main(int argc, char const *argv[]) {
   #if TEST == 1
   return RSGtest(argc,argv);
   #endif
-  if(argc < 6){
-    cout << "You did not supply engouh arguments" << endl;
-    return -1;
-  }
   int NoS , NoT, LoS;
   string set, save;
+  if(argc < 5){
+    cout << "You did not supply engouh arguments" << endl;
+    return -1;
+  } else if(argc == 6){
+    save = argv[5];
+  } else {
+    save = "";
+  }
   NoS = strtol(argv[1],nullptr,0);
   NoT = strtol(argv[2],nullptr,0);
   LoS = strtol(argv[3],nullptr,0);
   set = argv[4];
-  save = argv[5];
   cout << "Aproximent needed RAM (bytes): " << (sizeof(list<string>) + (sizeof(string) * NoS)) << endl;
 
   stringGen gen(LoS);
@@ -45,7 +48,9 @@ int main(int argc, char const *argv[]) {
   gen.clearMemory(true,false,false);
   cout << "Size of strings (bytes): " << (sizeof(list<string>) + (sizeof(string) * gen.returnListLen())) << endl;
   //printList(gen.returnList()," ,");
-  writeList(gen.returnList(),save);
+  if (save != ""){
+    writeList(gen.returnList(),save);
+  }
   return 0;
 }
 
