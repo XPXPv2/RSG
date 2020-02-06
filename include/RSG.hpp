@@ -30,6 +30,9 @@ public:
   //clears threads list or set or all
   int clearMemory(bool threads,bool list,bool set);
 
+  //terminates threads
+  int terminateThreads();
+
   // adds string to string list
   int addString(std::string toAdd);
 
@@ -52,6 +55,7 @@ private:
   std::list<std::thread*> threadList;
   int setLen, threadCount = 0;
   int stringLen = 0;
+  bool runThreads = true;
 
   //functions
   int randIndex();
