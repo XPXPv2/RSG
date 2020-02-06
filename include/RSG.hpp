@@ -53,6 +53,9 @@ private:
   int setLen, threadCount = 0;
   int stringLen = 0;
 
+  //decloration of the mutex
+  std::mutex mutex;
+
   //functions
   int randIndex();
   int initRandom();
