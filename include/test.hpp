@@ -4,6 +4,7 @@
 #include "RSG.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -72,5 +73,12 @@ TEST_CASE("RSG gen"){
     REQUIRE(strings.size() == 10);
     REQUIRE(unique(strings.begin(),strings.end()) == strings.end());
     REQUIRE(generator.clearMemory(true,true,false) == 0);
+  }
+  SECTION("Testing thread termination"){
+    REQUIRE(generator.setCharSet("abcdefghijklmnopqrstuvwxyz") == 0);
+    REQUIRE(generator.stringThreadHandler(1,1000000) == 0);
+    REQUIRE(generator.terminateThreads() == 0);
+    REQUIRE(generator.clearMemory(true,false,false) == 0);
+    REQUIRE(generator.returnList().size() < 1000000);
   }
 }

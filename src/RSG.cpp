@@ -77,7 +77,7 @@ std::string stringGen::genString(int len){
 int stringGen::genStrings(int number){
   if(this->posableGen(number) != 0) return -1;
   std::string temp;
-  for(int i = 0;i < number;i++){
+  for(int i = 0;i < number && this->runThreads;i++){
     temp = this->genString(this->stringLen);
     if(temp == ""){
       return -1;
@@ -131,6 +131,7 @@ int stringGen::clearMemory(bool threads,bool list,bool set){
       this->threadCount--;
     }
     this->threadList.clear();
+    this->runThreads = true;
   }
   if(set){
     this->setLen = 0;
@@ -139,6 +140,10 @@ int stringGen::clearMemory(bool threads,bool list,bool set){
   return 0;
 }
 
+int stringGen::terminateThreads(){
+  this->runThreads = false;
+  return 0;
+}
 
 // rework the following two functions
 //selects random index of the Set
