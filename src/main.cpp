@@ -1,10 +1,9 @@
 
 
-#ifndef TEST
+#ifdef NDEBUG
 #define TEST 0
 #include "RSG.hpp"
 #else
-#undef TEST
 #define TEST 1
 #include "test.hpp"
 #endif
