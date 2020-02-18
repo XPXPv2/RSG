@@ -57,6 +57,9 @@ private:
   int stringLen = 0;
   bool runThreads = true;
 
+  //decloration of the mutex
+  std::mutex mutex;
+
   //functions
   int randIndex();
   int initRandom();

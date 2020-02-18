@@ -1,7 +1,6 @@
 #include "RSG.hpp"
 
-//decloration of the mutex
-std::mutex MUX;
+
 
 stringGen::stringGen(int stringLen){
   //initalizes the nessary things for randomness
@@ -82,13 +81,13 @@ int stringGen::genStrings(int number){
     if(temp == ""){
       return -1;
     }
-    MUX.lock();
+    this->mutex.lock();
     if(this->addString(temp) == -1){
-      MUX.unlock();
+      this->mutex.unlock();
       i--;
       continue;
     } else {
-      MUX.unlock();
+      this->mutex.unlock();
     }
   }
   return 0;
