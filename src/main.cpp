@@ -3,6 +3,7 @@
 #ifdef NDEBUG
 #define TEST 0
 #include "RSG.hpp"
+#include "gui.hpp"
 #else
 #define TEST 1
 #include "test.hpp"
@@ -21,6 +22,13 @@ int main(int argc, char const *argv[]) {
   #if TEST == 1
   return RSGtest(argc,argv);
   #endif
+
+  ncursesGui test;
+  test.init();
+  test.mainLoop();
+  test.exit();
+  return 0;
+
   int NoS , NoT, LoS;
   string set, save;
   if(argc < 5){
