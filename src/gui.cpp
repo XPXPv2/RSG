@@ -15,7 +15,6 @@ int ncursesGui::init(){
     keypad(stdscr, TRUE);
     cbreak();
 
-    getmaxyx(stdscr,this->Xsize,this->Ysize);
     this->allocated = true;
 
     return 0;
@@ -35,9 +34,13 @@ int ncursesGui::mainLoop(){
 
   this->active = true;
 
+  refresh();
+  this->draw();
+
   while(this->active){
 
-    this->draw();
+    //probably unessary
+    //this->draw();
     refresh();
     this->pollEvents();
 
@@ -54,6 +57,9 @@ int ncursesGui::pollEvents(){
     case KEY_END:
       this->active = false;
       break;
+    case KEY_RESIZE:
+      this->redraw();
+      break;
 
     default:
       printw("%d",event);
@@ -65,7 +71,60 @@ int ncursesGui::pollEvents(){
 
 int ncursesGui::draw(){
 
-  mvprintw(((this->Xsize)/2),((this->Ysize)/2),"Hello World");
+  this->initSetWin();
+  this->initEntryWin();
+  this->initProgressWin();
+  mvprintw(((COLS)/2),((LINES)/2),"Hello World");
 
   return 0;
+}
+
+int ncursesGui::redraw(){
+  clear();
+  refresh();
+  this->draw();
+
+  return 0;
+}
+
+void ncursesGui::initEntryWin(){
+
+  int width = COLS * ENTRYWINWITHRATIO;
+  int hight = LINES * ENTRYWINHIGHTRATIO;
+  int x = COLS * .5;
+
+  this->entryWin = newwin(hight,width,0,x);
+  box(this->entryWin,0,0);
+
+  wrefresh(this->entryWin);
+
+  return;
+}
+
+void ncursesGui::initSetWin(){
+
+  int width = COLS * SETWINWITHRATIO;
+  int hight = LINES * SETWINHIGHTRATIO;
+
+  this->setWin = newwin(hight,width,0,0);
+  box(this->setWin,0,0);
+
+  wrefresh(this->setWin);
+
+  return;
+}
+
+void ncursesGui::initProgressWin(){
+
+  int width = COLS * PROGRESSWINWITHRATIO;
+  int hight = LINES * PROGRESSWINHIGHTRATIO;
+
+  int y = LINES * .5;
+
+  this->progressWin = newwin(hight,width,y,0);
+  box(this->progressWin,0,0);
+
+  wrefresh(this->progressWin);
+
+  return;
 }
