@@ -1,4 +1,6 @@
 #include <ncurses.h>
+#include <form.h>
+#include <string>
 
 #ifndef NDEFALT
 #define NDEFALT
@@ -11,6 +13,10 @@
 
 #define PROGRESSWINWITHRATIO 1
 #define PROGRESSWINHIGHTRATIO .5
+
+#define PROGRESSBAROFFSET 2
+#define PROGRESSBARCHAR '#'
+#define PROGRESSBARENDCHAR '>'
 
 #endif
 
@@ -29,13 +35,20 @@ public:
 private:
   bool allocated, active;
 
-  WINDOW *entryWin;
-  WINDOW *setWin;
-  WINDOW *progressWin;
+  WINDOW *entryWin = NULL;
+  WINDOW *setWin = NULL;
+  WINDOW *progressWin = NULL;
+  WINDOW *progressBar = NULL;
+
+  int progressBarWidth = 0, percentPosition = 0;
 
   void initEntryWin();
   void initSetWin();
   void initProgressWin();
+
+  void clearWindows();
+
+  void setProgressBar(float percentage);
 
 
 };

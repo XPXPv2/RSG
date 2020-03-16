@@ -1,6 +1,7 @@
 #include "gui.hpp"
 
 ncursesGui::ncursesGui(){
+
   return;
 }
 
@@ -15,6 +16,16 @@ int ncursesGui::init(){
     keypad(stdscr, TRUE);
     cbreak();
 
+    if(has_colors() == FALSE){
+      endwin();
+		  printf("Your terminal does not support color\n");
+      exit();
+    }
+
+    start_color();
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+
     this->allocated = true;
 
     return 0;
@@ -23,6 +34,7 @@ int ncursesGui::init(){
 int ncursesGui::exit(){
 
   if(this->allocated){
+    this->clearWindows();
     endwin();
     this->allocated = false;
   }
@@ -74,12 +86,14 @@ int ncursesGui::draw(){
   this->initSetWin();
   this->initEntryWin();
   this->initProgressWin();
-  mvprintw(((COLS)/2),((LINES)/2),"Hello World");
 
   return 0;
 }
 
 int ncursesGui::redraw(){
+
+  this->clearWindows();
+
   clear();
   refresh();
   this->draw();
@@ -121,10 +135,42 @@ void ncursesGui::initProgressWin(){
 
   int y = LINES * .5;
 
+  this->progressBarWidth = width - PROGRESSBAROFFSET * 2 - 2;
+  this->percentPosition = width - PROGRESSBAROFFSET * 2 + PROGRESSBAROFFSET + 1;
+
   this->progressWin = newwin(hight,width,y,0);
+  this->progressBar = newwin(3,this->progressBarWidth + 2,y + PROGRESSBAROFFSET, PROGRESSBAROFFSET);
   box(this->progressWin,0,0);
+  box(this->progressBar,0,0);
 
   wrefresh(this->progressWin);
+  wrefresh(this->progressBar);
+
+  return;
+}
+
+void ncursesGui::clearWindows(){
+
+  delwin(this->entryWin);
+  delwin(this->setWin);
+  delwin(this->progressWin);
+
+  return;
+}
+
+void ncursesGui::setProgressBar(float percentage){
+
+  int fillLength = percentage * this->progressBarWidth;
+  std::string fill(fillLength - 1,PROGRESSBARCHAR);
+  fill += PROGRESSBARENDCHAR;
+
+  wattron(this->progressBar,COLOR_PAIR(2));
+  mvwprintw(this->progressBar,1,1,fill.c_str());
+  wattroff(this->progressBar,COLOR_PAIR(2));
+
+  mvwprintw(this->progressBar,1,1 + fillLength/2 - 2,"%.1f%%", percentage * 100);
+
+  wrefresh(this->progressBar);
 
   return;
 }
