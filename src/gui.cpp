@@ -154,6 +154,7 @@ void ncursesGui::clearWindows(){
   delwin(this->entryWin);
   delwin(this->setWin);
   delwin(this->progressWin);
+  delwin(this->progressBar);
 
   return;
 }
