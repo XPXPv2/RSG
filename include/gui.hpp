@@ -18,7 +18,12 @@
 #define PROGRESSBARCHAR '#'
 #define PROGRESSBARENDCHAR '>'
 
+#define ENTRYLABLES {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:"}
+
 #endif
+
+#define ERRORCOLOR 1
+#define FINECOLOR 2
 
 class ncursesGui{
 public:
@@ -43,16 +48,22 @@ private:
   FIELD *setField[2];
   FORM *setForm;
 
+  FIELD *entryField[5];
+  FORM *entryForm;
+
   int progressBarWidth = 0, percentPosition = 0;
 
   void initEntryWin();
   void initSetWin();
   void initProgressWin();
+
   void initSetForm(int width,int hight);
+  void initEntryForm(int width,int hight);
 
   void clearWindows();
 
   void setProgressBar(float percentage);
+  void printLables();
 
 
 };

@@ -24,8 +24,8 @@ int ncursesGui::init(){
     }
 
     start_color();
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(ERRORCOLOR, COLOR_RED, COLOR_BLACK);
+    init_pair(FINECOLOR, COLOR_GREEN, COLOR_BLACK);
 
     this->allocated = true;
 
@@ -88,6 +88,7 @@ int ncursesGui::draw(){
   this->initSetWin();
   this->initEntryWin();
   this->initProgressWin();
+  this->printLables();
 
   return 0;
 }
@@ -110,6 +111,9 @@ void ncursesGui::initEntryWin(){
   int x = COLS * .5;
 
   this->entryWin = newwin(hight,width,0,x);
+
+  this->initEntryForm(width,hight);
+
   box(this->entryWin,0,0);
 
   wrefresh(this->entryWin);
@@ -127,8 +131,6 @@ void ncursesGui::initSetWin(){
   this->initSetForm(width,hight);
 
   box(this->setWin,0,0);
-
-  mvwprintw(this->setWin,1,1,"Set:");
 
   wrefresh(this->setWin);
 
@@ -172,9 +174,9 @@ void ncursesGui::setProgressBar(float percentage){
   std::string fill(fillLength - 1,PROGRESSBARCHAR);
   fill += PROGRESSBARENDCHAR;
 
-  wattron(this->progressBar,COLOR_PAIR(2));
+  wattron(this->progressBar,COLOR_PAIR(FINECOLOR));
   mvwprintw(this->progressBar,1,1,fill.c_str());
-  wattroff(this->progressBar,COLOR_PAIR(2));
+  wattroff(this->progressBar,COLOR_PAIR(FINECOLOR));
 
   mvwprintw(this->progressBar,1,1 + fillLength/2 - 2,"%.1f%%", percentage * 100);
 
@@ -200,4 +202,43 @@ void ncursesGui::initSetForm(int width, int hight){
   post_form(this->setForm);
 
   return;
+}
+
+void ncursesGui::initEntryForm(int width, int hight){
+
+  //TODO: clean up this form init with memory clearing
+
+  for(int i = 0; i < 4; i++){
+    this->entryField[i] = new_field( 1 , width - 4, 2 + (i * 2) , 2,0,0);
+    set_field_back(this->entryField[i], A_UNDERLINE);
+    field_opts_off(this->entryField[i], O_AUTOSKIP);
+
+  }
+
+  this->entryField[4] = NULL;
+
+  this->entryForm = new_form(this->entryField);
+
+  set_form_win(this->entryForm, this->entryWin);
+  set_form_sub(this->entryForm, derwin(this->entryWin, hight, width, 2, 2));
+  post_form(this->entryForm);
+
+  return;
+}
+
+void ncursesGui::printLables(){
+
+  mvwprintw(this->setWin,1,1,"Set:");
+
+  wrefresh(this->setWin);
+
+  std::string lables[] = ENTRYLABLES;
+
+  for(int i = 0; i < 4; i++){
+    mvwprintw(this->entryWin, 1 + (i * 2), 1, lables[i].c_str() );
+
+  }
+
+  wrefresh(this->entryWin);
+
 }
