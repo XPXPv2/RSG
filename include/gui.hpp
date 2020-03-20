@@ -40,11 +40,15 @@ private:
   WINDOW *progressWin = NULL;
   WINDOW *progressBar = NULL;
 
+  FIELD *setField[2];
+  FORM *setForm;
+
   int progressBarWidth = 0, percentPosition = 0;
 
   void initEntryWin();
   void initSetWin();
   void initProgressWin();
+  void initSetForm(int width,int hight);
 
   void clearWindows();
 

@@ -15,6 +15,7 @@ int ncursesGui::init(){
     initscr();
     keypad(stdscr, TRUE);
     cbreak();
+    noecho();
 
     if(has_colors() == FALSE){
       endwin();
@@ -74,7 +75,8 @@ int ncursesGui::pollEvents(){
       break;
 
     default:
-      printw("%d",event);
+      //printw("%d",event);
+      break;
 
   }
 
@@ -121,7 +123,12 @@ void ncursesGui::initSetWin(){
   int hight = LINES * SETWINHIGHTRATIO;
 
   this->setWin = newwin(hight,width,0,0);
+
+  this->initSetForm(width,hight);
+
   box(this->setWin,0,0);
+
+  mvwprintw(this->setWin,1,1,"Set:");
 
   wrefresh(this->setWin);
 
@@ -172,6 +179,25 @@ void ncursesGui::setProgressBar(float percentage){
   mvwprintw(this->progressBar,1,1 + fillLength/2 - 2,"%.1f%%", percentage * 100);
 
   wrefresh(this->progressBar);
+
+  return;
+}
+
+void ncursesGui::initSetForm(int width, int hight){
+
+  //TODO: clean up this form init with memory clearing
+
+  this->setField[0] = new_field(hight - 4 , width - 4, 2, 2,0,0);
+  this->setField[1] = NULL;
+
+  set_field_back(this->setField[0], A_UNDERLINE);
+  field_opts_off(this->setField[0], O_AUTOSKIP);
+
+  this->setForm = new_form(this->setField);
+
+  set_form_win(this->setForm, this->setWin);
+  set_form_sub(this->setForm, derwin(this->setWin, hight, width, 2, 2));
+  post_form(this->setForm);
 
   return;
 }
