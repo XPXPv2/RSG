@@ -20,6 +20,9 @@
 
 #define ENTRYLABLES {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:"}
 
+#define STARTLABLE "Start:F1"
+#define STOPLABLE "Stop:F2"
+
 #endif
 
 #define ERRORCOLOR 1
@@ -39,6 +42,8 @@ public:
 
 private:
   bool allocated, active;
+
+  int labelColors[7] = {FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,ERRORCOLOR};
 
   WINDOW *entryWin = NULL;
   WINDOW *setWin = NULL;
@@ -63,7 +68,7 @@ private:
   void clearWindows();
 
   void setProgressBar(float percentage);
-  void printLables();
+  void printLables(int colors[7]);
 
 
 };

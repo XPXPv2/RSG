@@ -88,7 +88,7 @@ int ncursesGui::draw(){
   this->initSetWin();
   this->initEntryWin();
   this->initProgressWin();
-  this->printLables();
+  this->printLables(this->labelColors);
 
   return 0;
 }
@@ -226,18 +226,31 @@ void ncursesGui::initEntryForm(int width, int hight){
   return;
 }
 
-void ncursesGui::printLables(){
+void ncursesGui::printLables(int colors[7]){
 
+
+  wattron(this->setWin,COLOR_PAIR(colors[0]));
   mvwprintw(this->setWin,1,1,"Set:");
+  wattroff(this->setWin,COLOR_PAIR(colors[0]));
 
   wrefresh(this->setWin);
 
   std::string lables[] = ENTRYLABLES;
 
-  for(int i = 0; i < 4; i++){
+  int i = 0;
+  for(; i < 4; i++){
+    wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
     mvwprintw(this->entryWin, 1 + (i * 2), 1, lables[i].c_str() );
-
+    wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
   }
+
+  wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
+  mvwprintw(this->entryWin, 1 + (i * 2), 1,STARTLABLE );
+  wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
+
+  wattron(this->entryWin,COLOR_PAIR(colors[i + 2]));
+  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABLE), STOPLABLE );
+  wattroff(this->entryWin,COLOR_PAIR(colors[i + 2]));
 
   wrefresh(this->entryWin);
 
