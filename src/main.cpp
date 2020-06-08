@@ -2,13 +2,12 @@
 
 #ifdef NDEBUG
 #define TEST 0
-#include "RSG.hpp"
+#include "gui.hpp"
 #else
 #define TEST 1
 #include "test.hpp"
 #endif
 
-#include "gui.hpp"
 
 #include <iostream>
 #include <fstream>

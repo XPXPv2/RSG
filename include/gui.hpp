@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include <form.h>
-#include <string>
-#include <iostream>
+#include "RSG.hpp"
+
 
 #ifndef NDEFALT
 #define NDEFALT
@@ -19,15 +19,19 @@
 #define PROGRESSBARCHAR '#'
 #define PROGRESSBARENDCHAR '>'
 
-#define ENTRYLABLES {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:"}
+#define ENTRYLABLES {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:","Set File:"}
 
 #define STARTLABLE "Start:F1"
 #define STOPLABLE "Stop:F2"
+#define SETFILE "Set File:F3"
+#define SETTEXT "Set Text:F3"
+
 
 #endif
 
 #define ERRORCOLOR 1
 #define FINECOLOR 2
+#define WORKINGCOLOR 3
 
 class ncursesGui{
 public:
@@ -44,7 +48,7 @@ public:
 private:
   bool allocated, active;
 
-  int labelColors[7] = {FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,ERRORCOLOR};
+  int labelColors[9] = {FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,FINECOLOR,ERRORCOLOR,FINECOLOR};
 
   WINDOW *entryWin = NULL;
   WINDOW *setWin = NULL;
@@ -61,6 +65,11 @@ private:
 
   int progressBarWidth = 0, percentPosition = 0;
 
+  bool setFile = false;
+
+  stringGen *generator;
+  int genrating = 0;
+
   void initEntryWin();
   void initSetWin();
   void initProgressWin();
@@ -75,6 +84,9 @@ private:
   void printLables(int colors[7]);
 
   void formInputHandler(int input);
+
+  void startGenerating();
+  void stopGenerating();
 
 
 };
