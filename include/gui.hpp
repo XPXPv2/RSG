@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <form.h>
 #include <string>
+#include <iostream>
 
 #ifndef NDEFALT
 #define NDEFALT
@@ -56,6 +57,8 @@ private:
   FIELD *entryField[5];
   FORM *entryForm;
 
+  FORM *activeForm;
+
   int progressBarWidth = 0, percentPosition = 0;
 
   void initEntryWin();
@@ -66,9 +69,12 @@ private:
   void initEntryForm(int width,int hight);
 
   void clearWindows();
+  void clearForms();
 
   void setProgressBar(float percentage);
   void printLables(int colors[7]);
+
+  void formInputHandler(int input);
 
 
 };

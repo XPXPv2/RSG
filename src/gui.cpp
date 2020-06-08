@@ -19,7 +19,7 @@ int ncursesGui::init(){
 
     if(has_colors() == FALSE){
       endwin();
-		  printf("Your terminal does not support color\n");
+		  std::cout << "Your terminal does not support color" << std::endl;
       exit();
     }
 
@@ -35,6 +35,7 @@ int ncursesGui::init(){
 int ncursesGui::exit(){
 
   if(this->allocated){
+    this->clearForms();
     this->clearWindows();
     endwin();
     this->allocated = false;
@@ -49,6 +50,7 @@ int ncursesGui::mainLoop(){
 
   refresh();
   this->draw();
+
 
   while(this->active){
 
@@ -74,8 +76,15 @@ int ncursesGui::pollEvents(){
       this->redraw();
       break;
 
+    case 9:
+      if (this->activeForm == this->entryForm){
+        this->activeForm = this->setForm;
+      } else {
+        this->activeForm = this->entryForm;
+      }
+
     default:
-      //printw("%d",event);
+      this->formInputHandler(event);
       break;
 
   }
@@ -218,6 +227,7 @@ void ncursesGui::initEntryForm(int width, int hight){
   this->entryField[4] = NULL;
 
   this->entryForm = new_form(this->entryField);
+  this->activeForm = this->entryForm;
 
   set_form_win(this->entryForm, this->entryWin);
   set_form_sub(this->entryForm, derwin(this->entryWin, hight, width, 2, 2));
@@ -254,4 +264,57 @@ void ncursesGui::printLables(int colors[7]){
 
   wrefresh(this->entryWin);
 
+}
+
+void ncursesGui::formInputHandler(int input){
+
+  form_driver(this->activeForm, REQ_END_FIELD);
+
+  switch (input) {
+    case KEY_UP:
+      form_driver(this->activeForm,REQ_PREV_FIELD);
+      form_driver(this->activeForm, REQ_END_LINE);
+      break;
+
+    case KEY_DOWN:
+      form_driver(this->activeForm, REQ_NEXT_FIELD);
+      form_driver(this->activeForm, REQ_END_LINE);
+      break;
+
+    case 127:
+    case KEY_BACKSPACE:
+      form_driver(this->activeForm,REQ_DEL_CHAR);
+      break;
+    default:
+      form_driver(this->activeForm,input);
+      break;
+  }
+
+  wrefresh(this->entryWin);
+  wrefresh(this->setWin);
+
+  return;
+}
+
+void ncursesGui::clearForms(){
+
+  this->activeForm = NULL;
+
+  unpost_form(this->entryForm);
+  unpost_form(this->setForm);
+
+  free_form(this->entryForm);
+  free_form(this->setForm);
+
+
+
+  for(int i = 0; i < 4; i++){
+    free_field(this->entryField[i]);
+    this->entryField[i] = NULL;
+  }
+
+  free_field(this->setField[0]);
+  this->setField[0] = NULL;
+
+  return;
 }
