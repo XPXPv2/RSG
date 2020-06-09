@@ -27,6 +27,7 @@ int main(int argc, char const *argv[]) {
   program.init();
   program.mainLoop();
   program.exit();
+
   return 0;
 
 }
