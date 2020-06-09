@@ -1,10 +1,9 @@
 #include "RSG.hpp"
 
 
-rsg::stringGen::stringGen(int stringLen){
+rsg::stringGen::stringGen(){
   //initalizes the nessary things for randomness
   this->initRandom();
-  this->stringLen = stringLen;
   return;
 }
 rsg::stringGen::~stringGen(){
@@ -31,6 +30,15 @@ int rsg::stringGen::setCharSet(std::list<char> set){
   this->charSet = temp;
   this->setLen = this->charSet.length();
   return 0;
+}
+
+int rsg::stringGen::setStringLength(int stringLen){
+  this->stringLen = stringLen;
+  return 0;
+}
+
+int rsg::stringGen::returnStringLength(){
+  return this->stringLen;
 }
 
 std::string rsg::stringGen::returnSet(){

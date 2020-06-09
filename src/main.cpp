@@ -37,7 +37,8 @@ int main(int argc, char const *argv[]) {
   set = argv[4];
   cout << "Aproximent needed RAM (bytes): " << (sizeof(list<string>) + (sizeof(string) * NoS)) << endl;
 
-  rsg::stringGen gen(LoS);
+  rsg::stringGen gen;
+  gen.setStringLength(LoS);
   gen.setCharSet(set);
   if (gen.stringThreadHandler(NoT,NoS) == -1){
     cout << "error" << endl;
