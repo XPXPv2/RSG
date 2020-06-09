@@ -23,10 +23,27 @@ int main(int argc, char const *argv[]) {
   return RSGtest(argc,argv);
   #endif
 
+<<<<<<< ours
   ncursesGui program;
   program.init();
   program.mainLoop();
   program.exit();
+=======
+  rsg::stringGen gen;
+  gen.setStringLength(LoS);
+  gen.setCharSet(set);
+  if (gen.stringThreadHandler(NoT,NoS) == -1){
+    cout << "error" << endl;
+    gen.clearMemory(true,true,true);
+    return -1;
+  }
+  gen.clearMemory(true,false,false);
+  cout << "Size of strings (bytes): " << (sizeof(list<string>) + (sizeof(string) * gen.returnListLen())) << endl;
+  //printList(gen.returnList()," ,");
+  if (save != ""){
+    writeList(gen.returnList(),save);
+  }
+>>>>>>> theirs
   return 0;
 
 }
@@ -43,7 +60,7 @@ void writeList(list<string> vlist,string name){
   file.open(name);
   list<string> :: iterator itr;
   for ( itr = vlist.begin(); itr != vlist.end(); itr++){
-    file << (*itr) << endl;
+    file << (*itr) << '\n';
   }
   file.close();
 }
