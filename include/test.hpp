@@ -18,7 +18,7 @@ int RSGtest(int argc, char const *argv[]){
 }
 
 TEST_CASE("RSG gen"){
-  stringGen generator(5);
+  rsg::stringGen generator(5);
 
   SECTION("Setting char set via string"){
     REQUIRE(generator.setCharSet("abc") == 0);
