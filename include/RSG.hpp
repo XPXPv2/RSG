@@ -8,6 +8,8 @@
 #include <cmath>
 
 
+namespace rsg{
+
 class stringGen{
 public:
   stringGen(int stringLen);
@@ -65,3 +67,6 @@ private:
   int initRandom();
 
 };
+
+
+}
