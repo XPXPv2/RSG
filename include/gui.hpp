@@ -67,8 +67,8 @@ private:
 
   bool setFile = false;
 
-  stringGen *generator;
-  int genrating = 0;
+  rsg::stringGen generator;
+  int generating = 0;
 
   void initEntryWin();
   void initSetWin();

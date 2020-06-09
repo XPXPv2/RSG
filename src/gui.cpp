@@ -45,7 +45,8 @@ int ncursesGui::exit(){
     endwin();
     this->allocated = false;
   }
-
+  this->generator.terminateThreads();
+  this->generator.clearMemory(true,true,true);
   return 0;
 }
 
@@ -387,18 +388,22 @@ void ncursesGui::startGenerating(){
     charSet = field_buffer(this->setField[0],0);
   }
 
-//changed this as soon as possable couldnt becuse lacked necceary function in stringGen
-  this->generator = new stringGen(stringLength);
-  this->generator->setCharSet(charSet);
 
-  if (this->generator->posableGen(stringNumber) != 0){
+  if (this->generating != 0){
+    return;
+  }
+  this->generator.clearMemory(true,true,true);
+  this->generator.setStringLength(stringLength);
+  this->generator.setCharSet(charSet);
+
+  if (this->generator.posableGen(stringNumber) != 0){
     this->labelColors[6] = FINECOLOR;
     this->printLables(labelColors);
     return;
   }
 
-  this->generator->stringThreadHandler(threadNumber,stringNumber);
-  this->genrating = stringNumber;
+  this->generator.stringThreadHandler(threadNumber,stringNumber);
+  this->generating = stringNumber;
 
   return;
 }
