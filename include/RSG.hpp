@@ -8,15 +8,20 @@
 #include <cmath>
 
 
+namespace rsg{
+
 class stringGen{
 public:
-  stringGen(int stringLen);
+  stringGen();
   ~stringGen();
   //test if the the request amout of strings is posable
   int posableGen(int number);
   // set the Set
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);
+
+  int setStringLength(int number);
+  int returnStringLength();
 
   std::string returnSet();
 
@@ -53,7 +58,8 @@ private:
   std::unordered_set <std::string> strings;
   std::string charSet = "";
   std::list<std::thread*> threadList;
-  int setLen, threadCount = 0;
+  int setLen = 0;
+  int threadCount = 0;
   int stringLen = 0;
   bool runThreads = true;
 
@@ -65,3 +71,6 @@ private:
   int initRandom();
 
 };
+
+
+}

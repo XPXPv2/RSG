@@ -18,8 +18,12 @@ int RSGtest(int argc, char const *argv[]){
 }
 
 TEST_CASE("RSG gen"){
-  stringGen generator(5);
+  rsg::stringGen generator;
 
+  SECTION("Setting and retiving string len"){
+    REQUIRE(generator.setStringLength(5) == 0);
+    REQUIRE(generator.returnStringLength() == 5);
+  }
   SECTION("Setting char set via string"){
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.returnSet() == "abc");
@@ -45,6 +49,7 @@ TEST_CASE("RSG gen"){
     REQUIRE(generator.genString(5).size() == 5);
   }
   SECTION("Testing String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.genStrings(10) == 0);
     list<string> strings = generator.returnList();
@@ -55,6 +60,7 @@ TEST_CASE("RSG gen"){
 
   }
   SECTION("Testing Multithreaded Mono String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.startStringThread(2,5) == 0);
     REQUIRE(generator.clearMemory(true,false,false) == 0);
@@ -65,6 +71,7 @@ TEST_CASE("RSG gen"){
     REQUIRE(generator.clearMemory(true,true,false) == 0);
   }
   SECTION("Testing Multithreaded Multi String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.stringThreadHandler(3,10) == 0);
     REQUIRE(generator.clearMemory(true,false,false) == 0);
@@ -75,6 +82,7 @@ TEST_CASE("RSG gen"){
     REQUIRE(generator.clearMemory(true,true,false) == 0);
   }
   SECTION("Testing thread termination"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abcdefghijklmnopqrstuvwxyz") == 0);
     REQUIRE(generator.stringThreadHandler(1,1000000) == 0);
     REQUIRE(generator.terminateThreads() == 0);

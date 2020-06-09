@@ -43,7 +43,7 @@ void writeList(list<string> vlist,string name){
   file.open(name);
   list<string> :: iterator itr;
   for ( itr = vlist.begin(); itr != vlist.end(); itr++){
-    file << (*itr) << endl;
+    file << (*itr) << '\n';
   }
   file.close();
 }
