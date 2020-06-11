@@ -18,6 +18,7 @@ int ncursesGui::init(){
 
     initscr();
     keypad(stdscr, TRUE);
+    timeout(10);
     cbreak();
     noecho();
 
@@ -58,10 +59,16 @@ int ncursesGui::mainLoop(){
   this->draw();
 
 
+
   while(this->active){
 
     //probably unessary
     //this->draw();
+    if(this->generating != 0){
+      float percentage = float(this->generator.returnListLen())/float(this->generating);
+      this->setProgressBar(percentage);
+    }
+
     refresh();
     this->pollEvents();
 
@@ -95,12 +102,16 @@ int ncursesGui::pollEvents(){
       break;
 
     case KEY_F(2):
+      this->stopGenerating();
       break;
 
     case KEY_F(3):
       this->setFile = !(this->setFile);
       this->printLables(this->labelColors);
       break;
+
+    case ERR:
+        break;
 
     default:
       this->formInputHandler(event);
@@ -198,15 +209,22 @@ void ncursesGui::clearWindows(){
 
 void ncursesGui::setProgressBar(float percentage){
 
-  int fillLength = percentage * this->progressBarWidth;
-  std::string fill(fillLength - 1,PROGRESSBARCHAR);
+  if(percentage <= 0){
+      wclear(this->progressBar);
+      box(this->progressBar,0,0);
+      wrefresh(this->progressBar);
+      return;
+  }
+
+  int fillLength = percentage * (this->progressBarWidth - 2);
+  std::string fill(fillLength,PROGRESSBARCHAR);
   fill += PROGRESSBARENDCHAR;
 
   wattron(this->progressBar,COLOR_PAIR(FINECOLOR));
   mvwprintw(this->progressBar,1,1,fill.c_str());
   wattroff(this->progressBar,COLOR_PAIR(FINECOLOR));
 
-  mvwprintw(this->progressBar,1,1 + fillLength/2 - 2,"%.1f%%", percentage * 100);
+  mvwprintw(this->progressBar,1,this->progressBarWidth/2,"%2.1f%%", percentage * 100);
 
   wrefresh(this->progressBar);
 
@@ -406,4 +424,20 @@ void ncursesGui::startGenerating(){
   this->generating = stringNumber;
 
   return;
+}
+
+void ncursesGui::stopGenerating() {
+    this->labelColors[6] = ERRORCOLOR;
+    this->printLables(labelColors);
+
+    this->generator.terminateThreads();
+    this->generator.clearMemory(true,false,false);
+
+    this->labelColors[6] = FINECOLOR;
+    this->printLables(labelColors);
+
+    this->generating = 0;
+    this->setProgressBar(0.0);
+
+    return;
 }

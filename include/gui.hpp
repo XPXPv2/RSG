@@ -87,6 +87,7 @@ private:
 
   void startGenerating();
   void stopGenerating();
+  void generatingCompleate();
 
 
 };

@@ -22,14 +22,14 @@ int main(int argc, char const *argv[]) {
   #if TEST == 1
   return RSGtest(argc,argv);
   #endif
-
+  #if TEST != 1
   ncursesGui program;
   program.init();
   program.mainLoop();
   program.exit();
 
   return 0;
-
+  #endif
 }
 
 void printList(list<string> vlist, string sep){
