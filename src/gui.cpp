@@ -67,6 +67,10 @@ int ncursesGui::mainLoop(){
     if(this->generating != 0){
       float percentage = float(this->generator.returnListLen())/float(this->generating);
       this->setProgressBar(percentage);
+
+      if(percentage >= 1){
+          this->generatingCompleate();
+      }
     }
 
     refresh();
@@ -376,17 +380,16 @@ void ncursesGui::startGenerating(){
 
   this->labelColors[6] = WORKINGCOLOR;
   this->printLables(labelColors);
-
   int stringNumber;
   int stringLength;
   int threadNumber;
-  std::string saveFile;
+
   std::string charSet;
 
   std::sscanf(field_buffer(this->entryField[0],0),"%d",&stringNumber);
   std::sscanf(field_buffer(this->entryField[1],0),"%d",&stringLength);
   std::sscanf(field_buffer(this->entryField[2],0),"%d",&threadNumber);
-  saveFile = field_buffer(this->entryField[3],0);
+
 
   if(this->setFile){
 
@@ -440,4 +443,35 @@ void ncursesGui::stopGenerating() {
     this->setProgressBar(0.0);
 
     return;
+}
+
+void ncursesGui::generatingCompleate(){
+
+      printw("called");
+      refresh();
+
+      std::string saveFile;
+      saveFile = field_buffer(this->entryField[3],0);
+
+      std::ofstream savefile(saveFile);
+
+      if(!(savefile.is_open())){
+        this->labelColors[6] = ERRORCOLOR;
+        this->printLables(labelColors);
+        return;
+      }
+
+      std::list<std::string> toWrite = this->generator.returnList();
+      std::list<std::string> :: iterator itr;
+      for ( itr = toWrite.begin(); itr != toWrite.end(); itr++){
+        savefile << (*itr) << '\n';
+      }
+
+      savefile.close();
+
+      this->generator.clearMemory(false,true,false);
+
+      this->stopGenerating();
+
+      return;
 }
