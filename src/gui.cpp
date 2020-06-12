@@ -13,31 +13,31 @@ ncursesGui::ncursesGui(){
 
 ncursesGui::~ncursesGui(){
 
-    this->exit();
+  this->exit();
 }
 
 int ncursesGui::init(){
 
-    initscr();
-    keypad(stdscr, TRUE);
-    timeout(10);
-    cbreak();
-    noecho();
+  initscr();
+  keypad(stdscr, TRUE);
+  timeout(10);
+  cbreak();
+  noecho();
 
-    if(has_colors() == FALSE){
-      endwin();
-		  std::cout << "Your terminal does not support color" << std::endl;
-      exit();
-    }
+  if(has_colors() == FALSE){
+    endwin();
+    std::cout << "Your terminal does not support color" << std::endl;
+    exit();
+  }
 
-    start_color();
-    init_pair(ERRORCOLOR, COLOR_RED, COLOR_BLACK);
-    init_pair(FINECOLOR, COLOR_GREEN, COLOR_BLACK);
-    init_pair(WORKINGCOLOR, COLOR_CYAN, COLOR_BLACK);
+  start_color();
+  init_pair(ERRORCOLOR, COLOR_RED, COLOR_BLACK);
+  init_pair(FINECOLOR, COLOR_GREEN, COLOR_BLACK);
+  init_pair(WORKINGCOLOR, COLOR_CYAN, COLOR_BLACK);
 
-    this->allocated = true;
+  this->allocated = true;
 
-    return 0;
+  return 0;
 }
 
 int ncursesGui::exit(){
@@ -71,11 +71,12 @@ int ncursesGui::mainLoop(){
       this->setProgressBar(percentage);
 
       if(percentage >= 1){
-          this->generatingCompleate();
+        this->generatingCompleate();
       }
     }
 
     refresh();
+    pos_form_cursor(this->activeForm);
     this->pollEvents();
 
   }
@@ -85,7 +86,8 @@ int ncursesGui::mainLoop(){
 
 int ncursesGui::pollEvents(){
 
-  int event = getch();
+
+  int event = wgetch(form_win(this->activeForm));
 
   switch (event) {
     case KEY_END:
@@ -117,7 +119,7 @@ int ncursesGui::pollEvents(){
       break;
 
     case ERR:
-        break;
+      break;
 
     default:
       this->formInputHandler(event);
@@ -134,6 +136,10 @@ int ncursesGui::draw(){
   this->initEntryWin();
   this->initProgressWin();
   this->printLables(this->labelColors);
+  keypad(this->setWin, TRUE);
+  keypad(this->entryWin, TRUE);
+  wtimeout(this->setWin,10);
+  wtimeout(this->entryWin,10);
 
   return 0;
 }
@@ -216,10 +222,10 @@ void ncursesGui::clearWindows(){
 void ncursesGui::setProgressBar(float percentage){
 
   if(percentage <= 0){
-      wclear(this->progressBar);
-      box(this->progressBar,0,0);
-      wrefresh(this->progressBar);
-      return;
+    wclear(this->progressBar);
+    box(this->progressBar,0,0);
+    wrefresh(this->progressBar);
+    return;
   }
 
   int fillLength = percentage * (this->progressBarWidth - 2);
@@ -327,8 +333,6 @@ void ncursesGui::printLables(int colors[7]){
 
 void ncursesGui::formInputHandler(int input){
 
-  form_driver(this->activeForm, REQ_END_FIELD);
-
   switch (input) {
     case KEY_UP:
       form_driver(this->activeForm, REQ_VALIDATION);
@@ -344,15 +348,23 @@ void ncursesGui::formInputHandler(int input){
 
     case 127:
     case KEY_BACKSPACE:
-      form_driver(this->activeForm,REQ_DEL_CHAR);
+      form_driver(this->activeForm,REQ_DEL_PREV );
       break;
+
+    case KEY_RIGHT:
+      form_driver(this->activeForm,REQ_NEXT_CHAR);
+      break;
+
+    case KEY_LEFT:
+      form_driver(this->activeForm,REQ_PREV_CHAR);
+      break;
+
     default:
       form_driver(this->activeForm,input);
       break;
   }
 
-  wrefresh(this->entryWin);
-  wrefresh(this->setWin);
+  wrefresh(form_win(this->activeForm));
 
   return;
 }
@@ -380,8 +392,12 @@ void ncursesGui::clearForms(){
 
 void ncursesGui::startGenerating(){
 
+  form_driver(this->activeForm, REQ_NEXT_FIELD);
+  form_driver(this->activeForm, REQ_PREV_FIELD);
+
   this->labelColors[6] = WORKINGCOLOR;
   this->printLables(labelColors);
+
   int stringNumber;
   int stringLength;
   int threadNumber;
@@ -416,9 +432,11 @@ void ncursesGui::startGenerating(){
   if (this->generating != 0){
     return;
   }
+
   this->generator.clearMemory(true,true,true);
   this->generator.setStringLength(stringLength);
   this->generator.setCharSet(charSet);
+
 
   if (this->generator.posableGen(stringNumber) != 0){
     this->labelColors[6] = FINECOLOR;
@@ -433,45 +451,48 @@ void ncursesGui::startGenerating(){
 }
 
 void ncursesGui::stopGenerating() {
-    this->labelColors[6] = ERRORCOLOR;
-    this->printLables(labelColors);
+  this->labelColors[6] = ERRORCOLOR;
+  this->printLables(labelColors);
 
-    this->generator.terminateThreads();
-    this->generator.clearMemory(true,false,false);
+  this->generator.terminateThreads();
+  this->generator.clearMemory(true,false,false);
 
-    this->labelColors[6] = FINECOLOR;
-    this->printLables(labelColors);
+  this->labelColors[6] = FINECOLOR;
+  this->printLables(labelColors);
 
-    this->generating = 0;
-    this->setProgressBar(0.0);
+  this->generating = 0;
+  this->setProgressBar(0.0);
 
-    return;
+  return;
 }
 
 void ncursesGui::generatingCompleate(){
 
-      std::string saveFile;
-      saveFile = field_buffer(this->entryField[3],0);
+  form_driver(this->activeForm, REQ_NEXT_FIELD);
+  form_driver(this->activeForm, REQ_PREV_FIELD);
 
-      std::ofstream savefile(TRIMEND(saveFile));
+  std::string saveFile;
+  saveFile = field_buffer(this->entryField[3],0);
 
-      if(!(savefile.is_open())){
-        this->labelColors[6] = ERRORCOLOR;
-        this->printLables(labelColors);
-        return;
-      }
+  std::ofstream savefile(TRIMEND(saveFile));
 
-      std::list<std::string> toWrite = this->generator.returnList();
-      std::list<std::string> :: iterator itr;
-      for ( itr = toWrite.begin(); itr != toWrite.end(); itr++){
-        savefile << (*itr) << '\n';
-      }
+  if(!(savefile.is_open())){
+    this->labelColors[6] = ERRORCOLOR;
+    this->printLables(labelColors);
+    return;
+  }
 
-      savefile.close();
+  std::list<std::string> toWrite = this->generator.returnList();
+  std::list<std::string> :: iterator itr;
+  for ( itr = toWrite.begin(); itr != toWrite.end(); itr++){
+    savefile << (*itr) << '\n';
+  }
 
-      this->generator.clearMemory(false,true,false);
+  savefile.close();
 
-      this->stopGenerating();
+  this->generator.clearMemory(false,true,false);
 
-      return;
+  this->stopGenerating();
+
+  return;
 }
