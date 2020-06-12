@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+#define TRIMEND(x) x.erase(x.find_last_not_of(" ")+1)
+
 ncursesGui::ncursesGui(){
 
   return;
@@ -392,8 +394,8 @@ void ncursesGui::startGenerating(){
 
 
   if(this->setFile){
-
-    std::ifstream setfile(field_buffer(this->entryField[4],0));
+    std::string setName = field_buffer(this->entryField[4],0);
+    std::ifstream setfile(TRIMEND(setName));
 
     if(!(setfile.is_open())){
       this->labelColors[6] = FINECOLOR;
@@ -409,6 +411,7 @@ void ncursesGui::startGenerating(){
     charSet = field_buffer(this->setField[0],0);
   }
 
+  charSet = TRIMEND(charSet);
 
   if (this->generating != 0){
     return;
@@ -447,13 +450,10 @@ void ncursesGui::stopGenerating() {
 
 void ncursesGui::generatingCompleate(){
 
-      printw("called");
-      refresh();
-
       std::string saveFile;
       saveFile = field_buffer(this->entryField[3],0);
 
-      std::ofstream savefile(saveFile);
+      std::ofstream savefile(TRIMEND(saveFile));
 
       if(!(savefile.is_open())){
         this->labelColors[6] = ERRORCOLOR;
