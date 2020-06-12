@@ -10,7 +10,7 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
 SET(CURSES_USE_NCURSES TRUE)
-find_package(Curses REQUIRED)
+find_package(Curses QUIET)
 
 
 include_directories(include)
@@ -18,10 +18,24 @@ include_directories(libarys)
 
 file(GLOB SOURCES "src/*.cpp")
 
+file(GLOB COMMON "src/common/*.cpp")
+file(GLOB NCURCES "src/ncurces-interface/*.cpp")
+file(GLOB CMD "src/cmd-interface/*.cpp")
+
+add_library(RSG ${COMMON})
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-add_executable(rsg-test ${SOURCES})
-target_link_libraries(rsg-test ${CMAKE_THREAD_LIBS_INIT} ${CURSES_LIBRARIES})
+add_executable(rsg-test ${CMD})
+target_link_libraries(rsg-test ${CMAKE_THREAD_LIBS_INIT} RSG)
 else()
-add_executable(rsg ${SOURCES})
-target_link_libraries(rsg ${CMAKE_THREAD_LIBS_INIT} ${CURSES_LIBRARIES})
+add_executable(rsg-cmd ${CMD})
+
+target_link_libraries(rsg-cmd ${CMAKE_THREAD_LIBS_INIT} RSG)
+
+if(NOT CURSES_LIBRARIES)
+message(STATUS "NCURCES not found not compiling the ncurces gui")
+else()
+add_executable(rsg-ncurces ${NCURCES})
+target_link_libraries(rsg-ncurces ${CMAKE_THREAD_LIBS_INIT} ${CURSES_LIBRARIES} RSG)
+endif()
 endif()
