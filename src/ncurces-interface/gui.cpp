@@ -411,10 +411,8 @@ void ncursesGui::startGenerating(){
       return;
     }
 
-    std::stringstream buffer;
-    buffer << setfile.rdbuf();
+    std::getline(setfile,charSet);
 
-    charSet = buffer.str();
   } else {
     charSet = field_buffer(this->setField[0],0);
   }
