@@ -16,6 +16,7 @@
 #define PROGRESSWINHIGHTRATIO .5
 
 #define PROGRESSBAROFFSET 2
+#define PROGRESSBARHEIGHT 3
 #define PROGRESSBARCHAR '#'
 #define PROGRESSBARENDCHAR '>'
 
@@ -88,6 +89,7 @@ private:
   void startGenerating();
   void stopGenerating();
   void generatingCompleate();
+  void updateStatus();
 
 
 };

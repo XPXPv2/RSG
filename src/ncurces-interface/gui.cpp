@@ -66,15 +66,7 @@ int ncursesGui::mainLoop(){
 
     //probably unessary
     //this->draw();
-    if(this->generating != 0){
-      float percentage = float(this->generator.returnListLen())/float(this->generating);
-      this->setProgressBar(percentage);
-
-      if(percentage >= 1){
-        this->generatingCompleate();
-      }
-    }
-
+    this->updateStatus();
     refresh();
     pos_form_cursor(this->activeForm);
     this->pollEvents();
@@ -199,7 +191,7 @@ void ncursesGui::initProgressWin(){
   this->percentPosition = width - PROGRESSBAROFFSET * 2 + PROGRESSBAROFFSET + 1;
 
   this->progressWin = newwin(hight,width,y,0);
-  this->progressBar = newwin(3,this->progressBarWidth + 2,y + PROGRESSBAROFFSET, PROGRESSBAROFFSET);
+  this->progressBar = newwin(PROGRESSBARHEIGHT,this->progressBarWidth + 2,y + PROGRESSBAROFFSET, PROGRESSBAROFFSET);
   box(this->progressWin,0,0);
   box(this->progressBar,0,0);
 
@@ -494,5 +486,30 @@ void ncursesGui::generatingCompleate(){
 
   this->stopGenerating();
 
+  return;
+}
+
+void ncursesGui::updateStatus(){
+  if(this->generating == 0){
+    return;
+  }
+  int generated = this->generator.returnListLen();
+
+  float percentage = float(generated)/float(this->generating);
+
+  std::stringstream statusbuff;
+  std::string status;
+  statusbuff << "Generating " << generated << "/" << generating;
+  status = statusbuff.str();
+  status.resize(this->progressBarWidth + 2);
+
+  this->setProgressBar(percentage);
+
+  mvwprintw(this->progressWin, PROGRESSBAROFFSET + PROGRESSBARHEIGHT, PROGRESSBAROFFSET, status.c_str());
+  wrefresh(this->progressWin);
+
+  if(percentage >= 1){
+    this->generatingCompleate();
+  }
   return;
 }
