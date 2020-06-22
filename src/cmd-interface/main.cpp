@@ -15,12 +15,13 @@ using namespace std;
 void printList(list<string> vlist, string sep);
 void writeList(list<string> vlist,string name);
 
-// input args are NUMBEROS NUMBEROT LENGTHOS SET SAVEFILE
+#define inputs "input args are NUMBEROS NUMBEROT LENGTHOS SET SAVEFILE"
 
 int main(int argc, char const *argv[]) {
   #if TEST == 1
   return RSGtest(argc,argv);
   #endif
+  cout << inputs << endl;
   int NoS , NoT, LoS;
   string set, save;
   if(argc < 5){
