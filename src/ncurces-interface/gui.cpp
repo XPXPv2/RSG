@@ -64,7 +64,7 @@ int ncursesGui::mainLoop(){
 
   while(this->active){
 
-    //probably unessary
+    //probably unnecessary
     //this->draw();
     this->updateStatus();
     refresh();
@@ -107,7 +107,7 @@ int ncursesGui::pollEvents(){
 
     case KEY_F(3):
       this->setFile = !(this->setFile);
-      this->printLables(this->labelColors);
+      this->printLabels(this->labelColors);
       break;
 
     case ERR:
@@ -127,7 +127,7 @@ int ncursesGui::draw(){
   this->initSetWin();
   this->initEntryWin();
   this->initProgressWin();
-  this->printLables(this->labelColors);
+  this->printLabels(this->labelColors);
   keypad(this->setWin, TRUE);
   keypad(this->entryWin, TRUE);
   wtimeout(this->setWin,10);
@@ -280,7 +280,7 @@ void ncursesGui::initEntryForm(int width, int hight){
   return;
 }
 
-void ncursesGui::printLables(int colors[7]){
+void ncursesGui::printLabels(int colors[7]){
 
 
   wattron(this->setWin,COLOR_PAIR(colors[0]));
@@ -388,7 +388,7 @@ void ncursesGui::startGenerating(){
   form_driver(this->activeForm, REQ_PREV_FIELD);
 
   this->labelColors[6] = WORKINGCOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   int stringNumber;
   int stringLength;
@@ -407,7 +407,7 @@ void ncursesGui::startGenerating(){
 
     if(!(setfile.is_open())){
       this->labelColors[6] = FINECOLOR;
-      this->printLables(labelColors);
+      this->printLabels(labelColors);
       return;
     }
 
@@ -430,7 +430,7 @@ void ncursesGui::startGenerating(){
 
   if (this->generator.posableGen(stringNumber) != 0){
     this->labelColors[6] = FINECOLOR;
-    this->printLables(labelColors);
+    this->printLabels(labelColors);
     return;
   }
 
@@ -442,13 +442,13 @@ void ncursesGui::startGenerating(){
 
 void ncursesGui::stopGenerating() {
   this->labelColors[6] = ERRORCOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   this->generator.terminateThreads();
   this->generator.clearMemory(true,false,false);
 
   this->labelColors[6] = FINECOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   this->generating = 0;
   this->setProgressBar(0.0);
@@ -468,7 +468,7 @@ void ncursesGui::generatingCompleate(){
 
   if(!(savefile.is_open())){
     this->labelColors[6] = ERRORCOLOR;
-    this->printLables(labelColors);
+    this->printLabels(labelColors);
     return;
   }
 

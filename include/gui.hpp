@@ -82,7 +82,7 @@ private:
   void clearForms();
 
   void setProgressBar(float percentage);
-  void printLables(int colors[7]);
+  void printLabels(int colors[7]);
 
   void formInputHandler(int input);
 
