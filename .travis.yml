@@ -1,10 +1,8 @@
 language: cpp
 
 script:
-- mkdir build build/debug build/release
-- cd build/debug
-- cmake -DCMAKE_BUILD_TYPE=Debug ../.. && cmake --build .
-- cd ../release
-- cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build .
-- cd ../../bin
+- mkdir build
+- cmake . -Bbuild -G"Unix Makefiles"
+- cd build/
+- make
 - ./rsg-test
