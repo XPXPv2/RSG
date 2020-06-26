@@ -6,6 +6,7 @@
 #include <list>
 #include <unordered_set>
 #include <cmath>
+#include <random>
 
 
 namespace rsg{
@@ -63,12 +64,16 @@ private:
   int stringLen = 0;
   bool runThreads = true;
 
+  std::mt19937 rng;
+  std::uniform_int_distribution<std::mt19937::result_type> rngWrapper;
+
   //decloration of the mutex
   std::mutex mutex;
 
   //functions
   int randIndex();
   int initRandom();
+  void updateRandom();
 
 };
 
