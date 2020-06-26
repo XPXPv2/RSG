@@ -1,12 +1,5 @@
 
-
-#ifdef NDEBUG
-#define TEST 0
 #include "RSG.hpp"
-#else
-#define TEST 1
-#include "test.hpp"
-#endif
 
 #include <iostream>
 #include <fstream>
@@ -18,9 +11,6 @@ void writeList(list<string> vlist,string name);
 #define inputs "input args are NUMBEROS NUMBEROT LENGTHOS SET SAVEFILE"
 
 int main(int argc, char const *argv[]) {
-  #if TEST == 1
-  return RSGtest(argc,argv);
-  #endif
   cout << inputs << endl;
   int NoS , NoT, LoS;
   string set, save;

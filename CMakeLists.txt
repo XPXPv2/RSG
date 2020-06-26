@@ -21,10 +21,11 @@ file(GLOB SOURCES "src/*.cpp")
 file(GLOB COMMON "src/common/*.cpp")
 file(GLOB NCURCES "src/ncurces-interface/*.cpp")
 file(GLOB CMD "src/cmd-interface/*.cpp")
+file(GLOB TESTS "src/tests/*.cpp")
 
 add_library(RSG ${COMMON})
 
-add_executable(rsg-test ${CMD})
+add_executable(rsg-test ${TESTS})
 target_link_libraries(rsg-test ${CMAKE_THREAD_LIBS_INIT} RSG)
 
 add_executable(rsg-cmd ${CMD})
