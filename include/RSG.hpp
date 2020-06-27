@@ -1,5 +1,8 @@
 
 
+#ifndef RSG_HEADER
+#define RSG_HEADER
+
 #include <thread>
 #include <string>
 #include <mutex>
@@ -79,3 +82,6 @@ private:
 
 
 }
+
+
+#endif
