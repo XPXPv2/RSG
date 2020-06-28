@@ -1,25 +1,28 @@
 #include "RSG.hpp"
 
-//decloration of the mutex
-std::mutex MUX;
 
-stringGen::stringGen(int stringLen){
+rsg::stringGen::stringGen(){
   //initalizes the nessary things for randomness
   this->initRandom();
-  this->stringLen = stringLen;
   return;
 }
-stringGen::~stringGen(){
+rsg::stringGen::~stringGen(){
   this->clearMemory(true,true,true);
   return;
 }
-// set the Set
-int stringGen::setCharSet(std::string set){
-  this->charSet = set;
-  this->setLen = this->charSet.length();
+
+int rsg::stringGen::possibleGen(int number){
+  if(pow(this->setLen,this->stringLen) < number) return -1;
   return 0;
 }
-int stringGen::setCharSet(std::list<char> set){
+// set the Set
+int rsg::stringGen::setCharSet(std::string set){
+  this->charSet = set;
+  this->setLen = this->charSet.length();
+  this->updateRandom();
+  return 0;
+}
+int rsg::stringGen::setCharSet(std::list<char> set){
   std::string temp;
   std::list<char>::iterator itor;
   for(itor = set.begin();itor != set.end(); itor++){
@@ -27,28 +30,38 @@ int stringGen::setCharSet(std::list<char> set){
   }
   this->charSet = temp;
   this->setLen = this->charSet.length();
+  this->updateRandom();
   return 0;
 }
 
-std::string stringGen::returnSet(){
+int rsg::stringGen::setStringLength(int stringLen){
+  this->stringLen = stringLen;
+  return 0;
+}
+
+int rsg::stringGen::returnStringLength(){
+  return this->stringLen;
+}
+
+std::string rsg::stringGen::returnSet(){
   return this->charSet;
 }
 
 // returns list of strings
-//int stringGen::returnList(std::list<std::string> *copyLoc);
-std::list<std::string> stringGen::returnList(){
+//int rsg::stringGen::returnList(std::list<std::string> *copyLoc);
+std::list<std::string> rsg::stringGen::returnList(){
   std::list<std::string> temp;
   temp.insert(temp.end(),this->strings.begin(),this->strings.end());
   return temp;
 }
 
 //returns number of strings
-int stringGen::returnListLen(){
+int rsg::stringGen::returnListLen(){
   return this->strings.size();
 }
 
 // adds string to string list
-int stringGen::addString(std::string toAdd){
+int rsg::stringGen::addString(std::string toAdd){
   if((this->strings).find(toAdd) != (this->strings).end()){
     return -1;
   }
@@ -57,7 +70,7 @@ int stringGen::addString(std::string toAdd){
 }
 
 //gernerates a single string of lengh (len)
-std::string stringGen::genString(int len){
+std::string rsg::stringGen::genString(int len){
   if(this->setLen == 0){
     return "";
   }
@@ -69,34 +82,31 @@ std::string stringGen::genString(int len){
 }
 
 //gernerates strings and adds them to the list
-int stringGen::genStrings(int number){
-  int max = pow((this->setLen), this->stringLen);
-  if (number > max){
-    return -1;
-  }
+int rsg::stringGen::genStrings(int number){
+  if(this->possibleGen(number) != 0) return -1;
   std::string temp;
-  for(int i = 0;i < number;i++){
+  for(int i = 0;i < number && this->runThreads;i++){
     temp = this->genString(this->stringLen);
     if(temp == ""){
       return -1;
     }
-    MUX.lock();
+    this->mutex.lock();
     if(this->addString(temp) == -1){
-      MUX.unlock();
+      this->mutex.unlock();
       i--;
       continue;
     } else {
-      MUX.unlock();
+      this->mutex.unlock();
     }
   }
   return 0;
 }
 
 //starts threads equal to (threadNumber) running genStrings
-int stringGen::startStringThread(int threadNumber, int stringNumber){
+int rsg::stringGen::startStringThread(int threadNumber, int stringNumber){
   std::thread *threadPTR = NULL;
   for(int i = 0;i < threadNumber;i++){
-    threadPTR = new std::thread(&stringGen::genStrings,this,stringNumber);
+    threadPTR = new std::thread(&rsg::stringGen::genStrings,this,stringNumber);
     this->threadList.push_back(threadPTR);
     this->threadCount++;
   }
@@ -104,8 +114,8 @@ int stringGen::startStringThread(int threadNumber, int stringNumber){
 }
 
 //divys up the number strings to be generated to the threads it starts with startStringThread
-int stringGen::stringThreadHandler(int threadNumber, int stringNumber){
-  if(pow(this->setLen,this->stringLen) < stringNumber) return -1;
+int rsg::stringGen::stringThreadHandler(int threadNumber, int stringNumber){
+  if(this->possibleGen(stringNumber) != 0) return -1;
 
   int perThread = floor(stringNumber/threadNumber);
   int extra =  stringNumber % threadNumber;
@@ -116,7 +126,7 @@ int stringGen::stringThreadHandler(int threadNumber, int stringNumber){
 }
 
 //frees up any allocated memory
-int stringGen::clearMemory(bool threads,bool list,bool set){
+int rsg::stringGen::clearMemory(bool threads,bool list,bool set){
   if(list){
     this->strings.clear();
   }
@@ -129,6 +139,7 @@ int stringGen::clearMemory(bool threads,bool list,bool set){
       this->threadCount--;
     }
     this->threadList.clear();
+    this->runThreads = true;
   }
   if(set){
     this->setLen = 0;
@@ -137,15 +148,24 @@ int stringGen::clearMemory(bool threads,bool list,bool set){
   return 0;
 }
 
-
-// rework the following two functions
-//selects random index of the Set
-int stringGen::randIndex(){
-  return rand() % (this->setLen);
+int rsg::stringGen::terminateThreads(){
+  this->runThreads = false;
+  return 0;
 }
 
+//selects random index of the Set
+int rsg::stringGen::randIndex(){
+  int index = this->rngWrapper(this->rng);
+  return index;
+}
+//updates the rng wrapper when setlength is changed
+void rsg::stringGen::updateRandom(){
+  this->rngWrapper = std::uniform_int_distribution<std::mt19937::result_type> (0,this->setLen - 1);
+  return;
+}
 //initalizes the randomizer
-int stringGen::initRandom(){
-  srand(time(NULL));
+int rsg::stringGen::initRandom(){
+  this->rng.seed(time(NULL));
+  this->rngWrapper = std::uniform_int_distribution<std::mt19937::result_type> (0,this->setLen);
   return 0;
 }

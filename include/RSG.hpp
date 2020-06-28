@@ -1,20 +1,31 @@
 
 
+#ifndef RSG_HEADER
+#define RSG_HEADER
+
 #include <thread>
 #include <string>
 #include <mutex>
 #include <list>
 #include <unordered_set>
 #include <cmath>
+#include <random>
 
+
+namespace rsg{
 
 class stringGen{
 public:
-  stringGen(int stringLen);
+  stringGen();
   ~stringGen();
+  //test if the the request amout of strings is posable
+  int possibleGen(int number);
   // set the Set
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);
+
+  int setStringLength(int number);
+  int returnStringLength();
 
   std::string returnSet();
 
@@ -27,6 +38,9 @@ public:
 
   //clears threads list or set or all
   int clearMemory(bool threads,bool list,bool set);
+
+  //terminates threads
+  int terminateThreads();
 
   // adds string to string list
   int addString(std::string toAdd);
@@ -48,11 +62,31 @@ private:
   std::unordered_set <std::string> strings;
   std::string charSet = "";
   std::list<std::thread*> threadList;
-  int setLen, threadCount = 0;
+  int setLen = 0;
+  int threadCount = 0;
   int stringLen = 0;
+  bool runThreads = true;
+
+
+  //declaration of the mutex
+  std::mutex mutex;
+
+  std::mt19937 rng;
+  std::uniform_int_distribution<std::mt19937::result_type> rngWrapper;
+
+
+
+  
 
   //functions
   int randIndex();
   int initRandom();
+  void updateRandom();
 
 };
+
+
+}
+
+
+#endif

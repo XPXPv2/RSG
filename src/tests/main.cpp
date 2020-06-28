@@ -1,24 +1,19 @@
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 #include "RSG.hpp"
 
-#include <algorithm>
+#include <list>
 
 using namespace std;
 
 
-
-int RSGtest(int argc, char const *argv[]){
-
-  int result = Catch::Session().run( argc, argv );
-  return result;
-
-}
-
 TEST_CASE("RSG gen"){
-  stringGen generator(5);
+  rsg::stringGen generator;
 
+  SECTION("Setting and retiving string len"){
+    REQUIRE(generator.setStringLength(5) == 0);
+    REQUIRE(generator.returnStringLength() == 5);
+  }
   SECTION("Setting char set via string"){
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.returnSet() == "abc");
@@ -44,6 +39,7 @@ TEST_CASE("RSG gen"){
     REQUIRE(generator.genString(5).size() == 5);
   }
   SECTION("Testing String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.genStrings(10) == 0);
     list<string> strings = generator.returnList();
@@ -54,6 +50,7 @@ TEST_CASE("RSG gen"){
 
   }
   SECTION("Testing Multithreaded Mono String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.startStringThread(2,5) == 0);
     REQUIRE(generator.clearMemory(true,false,false) == 0);
@@ -64,6 +61,7 @@ TEST_CASE("RSG gen"){
     REQUIRE(generator.clearMemory(true,true,false) == 0);
   }
   SECTION("Testing Multithreaded Multi String Generation"){
+    REQUIRE(generator.setStringLength(5) == 0);
     REQUIRE(generator.setCharSet("abc") == 0);
     REQUIRE(generator.stringThreadHandler(3,10) == 0);
     REQUIRE(generator.clearMemory(true,false,false) == 0);
@@ -72,5 +70,13 @@ TEST_CASE("RSG gen"){
     REQUIRE(strings.size() == 10);
     REQUIRE(unique(strings.begin(),strings.end()) == strings.end());
     REQUIRE(generator.clearMemory(true,true,false) == 0);
+  }
+  SECTION("Testing thread termination"){
+    REQUIRE(generator.setStringLength(5) == 0);
+    REQUIRE(generator.setCharSet("abcdefghijklmnopqrstuvwxyz") == 0);
+    REQUIRE(generator.stringThreadHandler(1,1000000) == 0);
+    REQUIRE(generator.terminateThreads() == 0);
+    REQUIRE(generator.clearMemory(true,false,false) == 0);
+    REQUIRE(generator.returnList().size() < 1000000);
   }
 }
