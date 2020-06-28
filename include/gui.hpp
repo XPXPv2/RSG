@@ -88,7 +88,7 @@ private:
 
   void startGenerating();
   void stopGenerating();
-  void generatingCompleate();
+  void generatingComplete();
   void updateStatus();
 
 

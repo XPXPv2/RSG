@@ -289,7 +289,7 @@ void ncursesGui::printLabels(int colors[7]){
 
   wrefresh(this->setWin);
 
-  std::string lables[] = ENTRYLABELS; //edit @6.27.20
+  std::string labels[] = ENTRYLABELS; //edit @6.27.20
 
   int i = 0;
   for(; i < 5; i++){

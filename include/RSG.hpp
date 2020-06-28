@@ -15,7 +15,7 @@ public:
   stringGen();
   ~stringGen();
   //test if the the request amout of strings is posable
-  int posableGen(int number);
+  int possibleGen(int number);
   // set the Set
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);
@@ -63,7 +63,7 @@ private:
   int stringLen = 0;
   bool runThreads = true;
 
-  //decloration of the mutex
+  //declaration of the mutex
   std::mutex mutex;
 
   //functions
