@@ -11,7 +11,7 @@ rsg::stringGen::~stringGen(){
   return;
 }
 
-int rsg::stringGen::posableGen(int number){
+int rsg::stringGen::possibleGen(int number){
   if(pow(this->setLen,this->stringLen) < number) return -1;
   return 0;
 }
@@ -83,7 +83,7 @@ std::string rsg::stringGen::genString(int len){
 
 //gernerates strings and adds them to the list
 int rsg::stringGen::genStrings(int number){
-  if(this->posableGen(number) != 0) return -1;
+  if(this->possibleGen(number) != 0) return -1;
   std::string temp;
   for(int i = 0;i < number && this->runThreads;i++){
     temp = this->genString(this->stringLen);
@@ -115,7 +115,7 @@ int rsg::stringGen::startStringThread(int threadNumber, int stringNumber){
 
 //divys up the number strings to be generated to the threads it starts with startStringThread
 int rsg::stringGen::stringThreadHandler(int threadNumber, int stringNumber){
-  if(this->posableGen(stringNumber) != 0) return -1;
+  if(this->possibleGen(stringNumber) != 0) return -1;
 
   int perThread = floor(stringNumber/threadNumber);
   int extra =  stringNumber % threadNumber;

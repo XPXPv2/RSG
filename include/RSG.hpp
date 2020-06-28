@@ -19,7 +19,7 @@ public:
   stringGen();
   ~stringGen();
   //test if the the request amout of strings is posable
-  int posableGen(int number);
+  int possibleGen(int number);
   // set the Set
   int setCharSet(std::string set);
   int setCharSet(std::list<char> set);
@@ -67,11 +67,16 @@ private:
   int stringLen = 0;
   bool runThreads = true;
 
+
+  //declaration of the mutex
+  std::mutex mutex;
+
   std::mt19937 rng;
   std::uniform_int_distribution<std::mt19937::result_type> rngWrapper;
 
-  //decloration of the mutex
-  std::mutex mutex;
+
+
+  
 
   //functions
   int randIndex();

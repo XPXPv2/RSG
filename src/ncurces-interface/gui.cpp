@@ -64,7 +64,7 @@ int ncursesGui::mainLoop(){
 
   while(this->active){
 
-    //probably unessary
+    //probably unnecessary
     //this->draw();
     this->updateStatus();
     refresh();
@@ -107,7 +107,7 @@ int ncursesGui::pollEvents(){
 
     case KEY_F(3):
       this->setFile = !(this->setFile);
-      this->printLables(this->labelColors);
+      this->printLabels(this->labelColors);
       break;
 
     case ERR:
@@ -127,7 +127,7 @@ int ncursesGui::draw(){
   this->initSetWin();
   this->initEntryWin();
   this->initProgressWin();
-  this->printLables(this->labelColors);
+  this->printLabels(this->labelColors);
   keypad(this->setWin, TRUE);
   keypad(this->entryWin, TRUE);
   wtimeout(this->setWin,10);
@@ -280,7 +280,7 @@ void ncursesGui::initEntryForm(int width, int hight){
   return;
 }
 
-void ncursesGui::printLables(int colors[7]){
+void ncursesGui::printLabels(int colors[7]){
 
 
   wattron(this->setWin,COLOR_PAIR(colors[0]));
@@ -289,21 +289,21 @@ void ncursesGui::printLables(int colors[7]){
 
   wrefresh(this->setWin);
 
-  std::string lables[] = ENTRYLABLES;
+  std::string labels[] = ENTRYLABELS; //edit @6.27.20
 
   int i = 0;
   for(; i < 5; i++){
     wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
-    mvwprintw(this->entryWin, 1 + (i * 2), 1, lables[i].c_str() );
+    mvwprintw(this->entryWin, 1 + (i * 2), 1, labels[i].c_str() );
     wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
   }
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1,STARTLABLE );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1,STARTLABEL );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 2]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABLE), STOPLABLE );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABEL), STOPLABEL );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 2]));
 
   std::string toPrint;
@@ -314,7 +314,7 @@ void ncursesGui::printLables(int colors[7]){
   }
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 3]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABLE) + sizeof(STOPLABLE), toPrint.c_str() );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABEL) + sizeof(STOPLABEL), toPrint.c_str() );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 3]));
 
 
@@ -388,7 +388,7 @@ void ncursesGui::startGenerating(){
   form_driver(this->activeForm, REQ_PREV_FIELD);
 
   this->labelColors[6] = WORKINGCOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   int stringNumber;
   int stringLength;
@@ -407,7 +407,7 @@ void ncursesGui::startGenerating(){
 
     if(!(setfile.is_open())){
       this->labelColors[6] = FINECOLOR;
-      this->printLables(labelColors);
+      this->printLabels(labelColors);
       return;
     }
 
@@ -428,9 +428,9 @@ void ncursesGui::startGenerating(){
   this->generator.setCharSet(charSet);
 
 
-  if (this->generator.posableGen(stringNumber) != 0){
+  if (this->generator.possibleGen(stringNumber) != 0){
     this->labelColors[6] = FINECOLOR;
-    this->printLables(labelColors);
+    this->printLabels(labelColors);
     return;
   }
 
@@ -442,13 +442,13 @@ void ncursesGui::startGenerating(){
 
 void ncursesGui::stopGenerating() {
   this->labelColors[6] = ERRORCOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   this->generator.terminateThreads();
   this->generator.clearMemory(true,false,false);
 
   this->labelColors[6] = FINECOLOR;
-  this->printLables(labelColors);
+  this->printLabels(labelColors);
 
   this->generating = 0;
   this->setProgressBar(0.0);
@@ -456,7 +456,7 @@ void ncursesGui::stopGenerating() {
   return;
 }
 
-void ncursesGui::generatingCompleate(){
+void ncursesGui::generatingComplete(){
 
   form_driver(this->activeForm, REQ_NEXT_FIELD);
   form_driver(this->activeForm, REQ_PREV_FIELD);
@@ -468,7 +468,7 @@ void ncursesGui::generatingCompleate(){
 
   if(!(savefile.is_open())){
     this->labelColors[6] = ERRORCOLOR;
-    this->printLables(labelColors);
+    this->printLabels(labelColors);
     return;
   }
 
@@ -507,7 +507,7 @@ void ncursesGui::updateStatus(){
   wrefresh(this->progressWin);
 
   if(percentage >= 1){
-    this->generatingCompleate();
+    this->generatingComplete();
   }
   return;
 }
