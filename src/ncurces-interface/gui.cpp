@@ -289,21 +289,21 @@ void ncursesGui::printLabels(int colors[7]){
 
   wrefresh(this->setWin);
 
-  std::string lables[] = ENTRYLABLES;
+  std::string lables[] = ENTRYLABELS; //edit @6.27.20
 
   int i = 0;
   for(; i < 5; i++){
     wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
-    mvwprintw(this->entryWin, 1 + (i * 2), 1, lables[i].c_str() );
+    mvwprintw(this->entryWin, 1 + (i * 2), 1, labels[i].c_str() );
     wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
   }
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 1]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1,STARTLABLE );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1,STARTLABEL );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 1]));
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 2]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABLE), STOPLABLE );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABEL), STOPLABEL );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 2]));
 
   std::string toPrint;
@@ -314,7 +314,7 @@ void ncursesGui::printLabels(int colors[7]){
   }
 
   wattron(this->entryWin,COLOR_PAIR(colors[i + 3]));
-  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABLE) + sizeof(STOPLABLE), toPrint.c_str() );
+  mvwprintw(this->entryWin, 1 + (i * 2), 1 + sizeof(STARTLABEL) + sizeof(STOPLABEL), toPrint.c_str() );
   wattroff(this->entryWin,COLOR_PAIR(colors[i + 3]));
 
 
@@ -428,7 +428,7 @@ void ncursesGui::startGenerating(){
   this->generator.setCharSet(charSet);
 
 
-  if (this->generator.posableGen(stringNumber) != 0){
+  if (this->generator.possibleGen(stringNumber) != 0){
     this->labelColors[6] = FINECOLOR;
     this->printLabels(labelColors);
     return;
@@ -456,7 +456,7 @@ void ncursesGui::stopGenerating() {
   return;
 }
 
-void ncursesGui::generatingCompleate(){
+void ncursesGui::generatingComplete(){
 
   form_driver(this->activeForm, REQ_NEXT_FIELD);
   form_driver(this->activeForm, REQ_PREV_FIELD);
@@ -507,7 +507,7 @@ void ncursesGui::updateStatus(){
   wrefresh(this->progressWin);
 
   if(percentage >= 1){
-    this->generatingCompleate();
+    this->generatingComplete();
   }
   return;
 }

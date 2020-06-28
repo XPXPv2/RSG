@@ -3,8 +3,8 @@
 #include "RSG.hpp"
 
 
-#ifndef NDEFALT
-#define NDEFALT
+#ifndef NDEFAULT
+#define NDEFAULT
 
 #define ENTRYWINWITHRATIO .5
 #define ENTRYWINHIGHTRATIO .5
@@ -20,10 +20,10 @@
 #define PROGRESSBARCHAR '#'
 #define PROGRESSBARENDCHAR '>'
 
-#define ENTRYLABLES {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:","Set File:"}
+#define ENTRYLABELS {"Number of Strings:","Length of Strings:","Number of Threads:","Save File:","Set File:"}
 
-#define STARTLABLE "Start:F1"
-#define STOPLABLE "Stop:F2"
+#define STARTLABEL "Start:F1"
+#define STOPLABEL "Stop:F2"
 #define SETFILE "Set File:F3"
 #define SETTEXT "Set Text:F3"
 
