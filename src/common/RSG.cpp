@@ -19,6 +19,7 @@ int rsg::stringGen::possibleGen(int number){
 int rsg::stringGen::setCharSet(std::string set){
   this->charSet = set;
   this->setLen = this->charSet.length();
+  this->updateRandom();
   return 0;
 }
 int rsg::stringGen::setCharSet(std::list<char> set){
@@ -29,6 +30,7 @@ int rsg::stringGen::setCharSet(std::list<char> set){
   }
   this->charSet = temp;
   this->setLen = this->charSet.length();
+  this->updateRandom();
   return 0;
 }
 
@@ -151,14 +153,19 @@ int rsg::stringGen::terminateThreads(){
   return 0;
 }
 
-// rework the following two functions
 //selects random index of the Set
 int rsg::stringGen::randIndex(){
-  return rand() % (this->setLen);
+  int index = this->rngWrapper(this->rng);
+  return index;
 }
-
+//updates the rng wrapper when setlength is changed
+void rsg::stringGen::updateRandom(){
+  this->rngWrapper = std::uniform_int_distribution<std::mt19937::result_type> (0,this->setLen - 1);
+  return;
+}
 //initalizes the randomizer
 int rsg::stringGen::initRandom(){
-  srand(time(NULL));
+  this->rng.seed(time(NULL));
+  this->rngWrapper = std::uniform_int_distribution<std::mt19937::result_type> (0,this->setLen);
   return 0;
 }

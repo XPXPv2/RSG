@@ -1,21 +1,11 @@
-#define CATCH_CONFIG_RUNNER
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#define CATCH_CONFIG_MAIN
 #include "catch/catch.hpp"
 #include "RSG.hpp"
 
-#include <algorithm>
-#include <iostream>
+#include <list>
 
 using namespace std;
 
-
-
-int RSGtest(int argc, char const *argv[]){
-
-  int result = Catch::Session().run( argc, argv );
-  return result;
-
-}
 
 TEST_CASE("RSG gen"){
   rsg::stringGen generator;

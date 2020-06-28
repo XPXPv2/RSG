@@ -1,3 +1,6 @@
+#ifndef RSG_GUI_NCURCES_HEADER
+#define RSG_GUI_NCURCES_HEADER
+
 #include <ncurses.h>
 #include <form.h>
 #include "RSG.hpp"
@@ -93,3 +96,6 @@ private:
 
 
 };
+
+
+#endif
