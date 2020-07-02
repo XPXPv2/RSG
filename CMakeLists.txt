@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.1)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 set(CMAKE_CXX_STANDARD 17)
 
-project(RSG VERSION 0.1)
+project(RSG VERSION 1.0)
 
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
