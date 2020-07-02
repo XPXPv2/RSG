@@ -1,6 +1,6 @@
 #include "gui.hpp"
 
-int main(int argc, char const *argv[]) {
+int main() {
   ncursesGui program;
   program.init();
   program.mainLoop();
