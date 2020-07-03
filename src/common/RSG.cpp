@@ -116,6 +116,7 @@ int rsg::stringGen::startStringThread(int threadNumber, int stringNumber){
 //divys up the number strings to be generated to the threads it starts with startStringThread
 int rsg::stringGen::stringThreadHandler(int threadNumber, int stringNumber){
   if(this->possibleGen(stringNumber) != 0) return -1;
+  if(threadNumber == 0) return -1;
 
   int perThread = floor(stringNumber/threadNumber);
   int extra =  stringNumber % threadNumber;

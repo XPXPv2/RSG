@@ -89,14 +89,6 @@ int ncursesGui::pollEvents(){
       this->redraw();
       break;
 
-    case 9:
-      if (this->activeForm == this->entryForm){
-        this->activeForm = this->setForm;
-      } else {
-        this->activeForm = this->entryForm;
-      }
-      break;
-
     case KEY_F(1):
       this->startGenerating();
       break;
@@ -349,6 +341,19 @@ void ncursesGui::formInputHandler(int input){
 
     case KEY_LEFT:
       form_driver(this->activeForm,REQ_PREV_CHAR);
+      break;
+
+    case 9:
+      if (form_driver(this->activeForm, REQ_VALIDATION) == E_INVALID_FIELD) break;
+
+      form_driver(this->activeForm, REQ_NEXT_FIELD);
+      form_driver(this->activeForm, REQ_PREV_FIELD);
+
+      if (this->activeForm == this->entryForm){
+        this->activeForm = this->setForm;
+      } else {
+        this->activeForm = this->entryForm;
+      }
       break;
 
     default:
