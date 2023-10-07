@@ -1,4 +1,3 @@
-
 #include "RSG.hpp"
 
 #include <iostream>
